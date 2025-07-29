@@ -1,0 +1,48 @@
+services:
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: new-cms-api
+    ports:
+      - "8000:80"
+    volumes:
+      - ./api:/var/www/html
+    working_dir: /var/www/html
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: new_cms_db
+      DB_USERNAME: user
+      DB_PASSWORD: password
+    depends_on:
+      - db
+
+  console:
+    build:
+      context: ./console
+      dockerfile: Dockerfile
+    container_name: new-cms-console
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./console:/app
+      - /app/node_modules
+    command: npm run dev -- --host
+
+  db:
+    image: mysql:8.0
+    container_name: new-cms-db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: new_cms_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: rootpassword
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:

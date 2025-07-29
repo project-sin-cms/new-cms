@@ -13,6 +13,6 @@ class {{name}} extends Model
 {
     use HasFactory;
 
-    protected $table = "{{name_lower}}";
+    protected $table = "cms_{{name_lower}}";
     protected $fillable = ['title'];
 }

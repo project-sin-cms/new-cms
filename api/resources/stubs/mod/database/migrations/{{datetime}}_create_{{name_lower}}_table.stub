@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('{{name_lower}}', function (Blueprint $table) {
+        Schema::create('cms_{{name_lower}}', function (Blueprint $table) {
             $table->id();
             $table->longText('title')->nullable();
             $table->timestamps();

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { DropdownItem } from '../ui/dropdown/DropdownItem'
 import { Dropdown } from '../ui/dropdown/Dropdown'
 import { Link } from 'react-router'
+import { UserIcon } from '../../icons/index'
 
 export const UserDropdown = () => {
     const [isOpen, setIsOpen] = useState(false)
@@ -18,31 +19,9 @@ export const UserDropdown = () => {
         <div className="relative">
             <button
                 onClick={toggleDropdown}
-                className="flex items-center text-gray-700 dropdown-toggle dark:text-gray-400"
+                className="relative flex items-center justify-center text-gray-500 transition-colors bg-white border border-gray-200 rounded-full hover:text-dark-900 h-8 w-8 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
             >
-                <span className="mr-3 overflow-hidden rounded-full h-11 w-11">
-                    <img src="/images/user/owner.jpg" alt="User" />
-                </span>
-
-                <span className="block mr-1 font-medium text-theme-sm">Musharof</span>
-                <svg
-                    className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${
-                        isOpen ? 'rotate-180' : ''
-                    }`}
-                    width="18"
-                    height="20"
-                    viewBox="0 0 18 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path
-                        d="M4.3125 8.65625L9 13.3437L13.6875 8.65625"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                    />
-                </svg>
+                <UserIcon />
             </button>
 
             <Dropdown
@@ -52,10 +31,10 @@ export const UserDropdown = () => {
             >
                 <div>
                     <span className="block font-medium text-gray-700 text-theme-sm dark:text-gray-400">
-                        Musharof Chowdhury
+                        アビリブ太郎
                     </span>
                     <span className="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
-                        randomuser@pimjo.com
+                        taro@ab-net.co.jp
                     </span>
                 </div>
 

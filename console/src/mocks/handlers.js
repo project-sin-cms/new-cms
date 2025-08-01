@@ -23,6 +23,7 @@ export const handlers = [
                 payload: {
                     current: 1,
                     pages: 10,
+                    totalItems: contentModelData.length, // 総アイテム数を追加
                     data: contentModelData,
                 },
             },

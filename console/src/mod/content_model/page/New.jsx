@@ -41,12 +41,7 @@ export const New = () => {
                     <BreadcrumbItem>新規作成</BreadcrumbItem>
                 </Breadcrumb>
             </CardHeader>
-            <CardBody className="relative"> {/* relativeクラスを追加 */}
-                {loading && (
-                    <div className="absolute inset-0 bg-gray-200 bg-opacity-75 flex items-center justify-center z-10"> {/* オーバーレイ */}
-                        <Spinner size="xl" /> {/* 大きめのスピナー */}
-                    </div>
-                )}
+            <CardBody>
                 <Form onSubmit={handleSubmit}>
                     <div className="flex flex-col gap-4">
                         {error && !validationErrors && (

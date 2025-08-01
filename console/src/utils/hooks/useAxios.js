@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react' // useCallbackをインポート
 import axios from 'axios'
 import config from '../../config/configLoader'
 
@@ -17,7 +17,8 @@ export const useAxios = () => {
     const [loading, setLoading] = useState(false)
     const [validationErrors, setValidationErrors] = useState(null)
 
-    const sendRequest = async (config) => {
+    // sendRequestをuseCallbackでメモ化
+    const sendRequest = useCallback(async (config) => {
         setLoading(true)
         setError(null)
         setData(null)
@@ -41,7 +42,7 @@ export const useAxios = () => {
         } finally {
             setLoading(false)
         }
-    }
+    }, []) // 依存配列は空でOK。apiClientはコンポーネントのライフサイクルを通じて変化しないため。
 
     return { data, error, loading, validationErrors, sendRequest }
 }

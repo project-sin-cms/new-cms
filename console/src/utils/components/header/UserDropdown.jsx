@@ -1,6 +1,7 @@
 import { Link } from 'react-router'
 import { UserIcon } from '../../icons/index'
 import { Dropdown, DropdownDivider, DropdownHeader, DropdownItem } from '../ui/dropdown'
+import { HiCog, HiLogout } from 'react-icons/hi'
 
 export const UserDropdown = () => {
     return (
@@ -19,9 +20,9 @@ export const UserDropdown = () => {
                     taro@ab-net.co.jp
                 </span>
             </DropdownHeader>
-            <DropdownItem to="/profile">編集</DropdownItem>
+            <DropdownItem icon={HiCog}>編集</DropdownItem>
             <DropdownDivider />
-            <DropdownItem>サインアウト</DropdownItem>
+            <DropdownItem icon={HiLogout}>サインアウト</DropdownItem>
         </Dropdown>
     )
 }

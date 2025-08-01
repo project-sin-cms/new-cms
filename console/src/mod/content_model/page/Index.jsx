@@ -8,15 +8,20 @@ import { Button } from '../../../utils/components/ui/button'
 import { Dropdown, DropdownItem } from '../../../utils/components/ui/dropdown'
 import { Modal, ModalBody } from '../../../utils/components/ui/modal'
 import { useState } from 'react'
-import { HiOutlineExclamationCircle } from 'react-icons/hi'
+import {
+    HiOutlineExclamationCircle,
+    HiOutlinePencilAlt,
+    HiOutlineXCircle,
+    HiOutlinePlusCircle,
+} from 'react-icons/hi'
+import { Breadcrumb, BreadcrumbItem } from '../../../utils/components/ui/breadcrumb'
 
 export const Index = () => {
     const { navigateTo } = useNavigation()
     const [showModal, setShowModal] = useState(false)
 
     const columns = [
-        { key: 'name', label: '名前', _props: { style: { width: '60%' } } },
-        { key: 'fields', label: 'フィールド数', _props: { style: { width: '30%' } } },
+        { key: 'name', label: '名前' },
         { key: 'actions', label: '', _props: { style: { width: '10%' } } },
     ]
 
@@ -47,10 +52,17 @@ export const Index = () => {
                         >
                             <DropdownItem
                                 onClick={() => navigateTo(`${config.path}/edit/${item.id}`)}
+                                icon={HiOutlinePencilAlt}
                             >
                                 編集
                             </DropdownItem>
-                            <DropdownItem onClick={() => setShowModal(true)}>削除</DropdownItem>
+                            <DropdownItem
+                                onClick={() => setShowModal(true)}
+                                icon={HiOutlineXCircle}
+                                className="text-red-800"
+                            >
+                                削除
+                            </DropdownItem>
                         </Dropdown>
                     </div>
                 </td>
@@ -63,8 +75,11 @@ export const Index = () => {
             <Card>
                 <CardHeader>
                     <div className="flex items-center justify-between w-full">
-                        <h4>{config.name}</h4>
+                        <Breadcrumb>
+                            <BreadcrumbItem>{config.name}</BreadcrumbItem>
+                        </Breadcrumb>
                         <Button size="xs" outline onClick={() => navigateTo(config.path + '/new')}>
+                            <HiOutlinePlusCircle className="me-1" />
                             追加
                         </Button>
                     </div>

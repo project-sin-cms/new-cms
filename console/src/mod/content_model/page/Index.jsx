@@ -1,3 +1,4 @@
+import { useLocation, useNavigate } from 'react-router-dom'
 import { Card, CardBody, CardHeader } from '../../../utils/components/ui/card'
 import { ListTable } from '../../../utils/components/ui/table'
 import { config } from '../utils/config'
@@ -7,7 +8,7 @@ import { useNavigation } from '../../../utils/hooks/useNavigation'
 import { Button } from '../../../utils/components/ui/button'
 import { Dropdown, DropdownItem } from '../../../utils/components/ui/dropdown'
 import { Modal, ModalBody } from '../../../utils/components/ui/modal'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react' // useRefをインポート
 import {
     HiOutlineExclamationCircle,
     HiOutlinePencilAlt,
@@ -15,10 +16,30 @@ import {
     HiOutlinePlusCircle,
 } from 'react-icons/hi'
 import { Breadcrumb, BreadcrumbItem } from '../../../utils/components/ui/breadcrumb'
+import { toast } from 'sonner'
 
 export const Index = () => {
     const { navigateTo } = useNavigation()
     const [showModal, setShowModal] = useState(false)
+    const location = useLocation()
+    const navigate = useNavigate()
+
+    // 最後に表示したトーストのメッセージ内容を記憶するref
+    const currentMessageRef = useRef(null)
+
+    useEffect(() => {
+        // メッセージがあり、かつそれが前回表示したメッセージと異なる場合のみトーストを表示
+        if (location.state?.message && location.state.message !== currentMessageRef.current) {
+            toast.success(location.state.message)
+            currentMessageRef.current = location.state.message // 表示したメッセージを記憶
+
+            // メッセージを表示したら、history.stateからメッセージを削除する
+            navigate(location.pathname, { replace: true, state: {} })
+        } else if (!location.state?.message && currentMessageRef.current) {
+            // location.stateにメッセージがない場合（クリアされた後など）はrefをリセット
+            currentMessageRef.current = null
+        }
+    }, [location, navigate])
 
     const columns = [
         { key: 'name', label: '名前' },

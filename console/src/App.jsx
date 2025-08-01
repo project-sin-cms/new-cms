@@ -3,6 +3,7 @@ import { AppLayout } from './utils/components/layout/AppLayout'
 import { ScrollToTop } from './utils/components/common/ScrollToTop'
 import { NotFound } from './utils/pages/OtherPage/NotFound'
 import { routes as menuRoutes } from './routes/routes'
+import { Toaster } from 'sonner' // Toasterをインポート
 
 function App() {
     return (
@@ -24,6 +25,7 @@ function App() {
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </Router>
+            <Toaster position="top-right" richColors /> {/* Toasterを追加 */}
         </>
     )
 }

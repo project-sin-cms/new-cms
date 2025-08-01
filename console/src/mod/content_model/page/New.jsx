@@ -1,13 +1,35 @@
+import { useState } from 'react'
+import { HiOutlineSave } from 'react-icons/hi'
+import { Alert } from '../../../utils/components/ui/alert'
+import { Spinner } from '../../../utils/components/ui/spinner'
 import { Breadcrumb, BreadcrumbItem } from '../../../utils/components/ui/breadcrumb'
 import { Button } from '../../../utils/components/ui/button'
 import { Card, CardHeader, CardBody, CardFooter } from '../../../utils/components/ui/card'
 import { config } from '../utils/config'
 import { Form, FormGroup, Label, Textarea, TextInput } from '../../../utils/components/ui/form'
 import { useNavigation } from '../../../utils/hooks/useNavigation'
-import { HiOutlineSave } from 'react-icons/hi'
+import { useAxios } from '../../../utils/hooks/useAxios'
 
 export const New = () => {
     const { navigateTo } = useNavigation()
+    const { error, loading, validationErrors, sendRequest } = useAxios()
+
+    const [name, setName] = useState('')
+    const [description, setDescription] = useState('')
+
+    const handleSubmit = async (event) => {
+        event.preventDefault()
+        const result = await sendRequest({
+            method: 'post',
+            url: 'content_model/store',
+            data: { name, description },
+        })
+
+        if (result.success) {
+            // 成功したらindexへ
+            navigateTo(config.path, { message: `記事を作成しました。` })
+        }
+    }
 
     return (
         <Card>
@@ -19,22 +41,52 @@ export const New = () => {
                     <BreadcrumbItem>新規作成</BreadcrumbItem>
                 </Breadcrumb>
             </CardHeader>
-            <CardBody>
-                <Form>
-                    <FormGroup>
-                        <Label htmlFor="name">名前</Label>
-                        <TextInput name="name" domId="name" required />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label htmlFor="description">説明</Label>
-                        <Textarea name="description" domId="description" />
-                    </FormGroup>
+            <CardBody className="relative"> {/* relativeクラスを追加 */}
+                {loading && (
+                    <div className="absolute inset-0 bg-gray-200 bg-opacity-75 flex items-center justify-center z-10"> {/* オーバーレイ */}
+                        <Spinner size="xl" /> {/* 大きめのスピナー */}
+                    </div>
+                )}
+                <Form onSubmit={handleSubmit}>
+                    <div className="flex flex-col gap-4">
+                        {error && !validationErrors && (
+                            <Alert color="failure">エラーが発生しました: {error.message}</Alert>
+                        )}
+
+                        <FormGroup>
+                            <Label htmlFor="name">名前</Label>
+                            <TextInput
+                                name="name"
+                                domId="name"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                required
+                            />
+                            {validationErrors?.name && (
+                                <p className="mt-2 text-sm text-red-600">{validationErrors.name}</p>
+                            )}
+                        </FormGroup>
+                        <FormGroup>
+                            <Label htmlFor="description">説明</Label>
+                            <Textarea
+                                name="description"
+                                domId="description"
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                            />
+                            {validationErrors?.description && (
+                                <p className="mt-2 text-sm text-red-600">
+                                    {validationErrors.description}
+                                </p>
+                            )}
+                        </FormGroup>
+                    </div>
                 </Form>
             </CardBody>
             <CardFooter>
                 <div className="flex justify-end">
-                    <Button size="xs" outline onClick={() => navigateTo(config.path)}>
-                        <HiOutlineSave className="me-1" />
+                    <Button size="xs" outline onClick={handleSubmit} disabled={loading}>
+                        {loading ? <Spinner size="sm" /> : <HiOutlineSave className="me-1" />}
                         保存
                     </Button>
                 </div>

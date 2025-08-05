@@ -5,22 +5,10 @@ import {
     ModalFooter as FModalFooter,
 } from 'flowbite-react'
 
-export const Modal = ({ show, children, ...props }) => {
-    return (
-        <FModal show={show} {...props}>
-            {children}
-        </FModal>
-    )
-}
+export const Modal = FModal
 
-export const ModalHeader = ({ children, ...props }) => {
-    return <FModalHeader {...props}>{children}</FModalHeader>
-}
+export const ModalHeader = FModalHeader
 
-export const ModalBody = ({ children, ...props }) => {
-    return <FModalBody {...props}>{children}</FModalBody>
-}
+export const ModalBody = FModalBody
 
-export const ModalFooter = ({ children, ...props }) => {
-    return <FModalFooter {...props}>{children}</FModalFooter>
-}
+export const ModalFooter = FModalFooter

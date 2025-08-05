@@ -5,33 +5,10 @@ import {
     DropdownDivider as FDropdownDivider,
 } from 'flowbite-react'
 
-export const Dropdown = ({
-    label = '',
-    dismissOnClick = false,
-    renderTrigger = null,
-    children,
-    ...props
-}) => {
-    return (
-        <FDropdown
-            label={label}
-            dismissOnClick={dismissOnClick}
-            renderTrigger={renderTrigger}
-            {...props}
-        >
-            {children}
-        </FDropdown>
-    )
-}
+export const Dropdown = FDropdown
 
-export const DropdownItem = ({ children, ...props }) => {
-    return <FDropdownItem {...props}>{children}</FDropdownItem>
-}
+export const DropdownItem = FDropdownItem
 
-export const DropdownHeader = ({ children, ...props }) => {
-    return <FDropdownHeader {...props}>{children}</FDropdownHeader>
-}
+export const DropdownHeader = FDropdownHeader
 
-export const DropdownDivider = () => {
-    return <FDropdownDivider />
-}
+export const DropdownDivider = FDropdownDivider

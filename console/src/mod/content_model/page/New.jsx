@@ -15,6 +15,7 @@ export const New = () => {
     const { error, loading, validationErrors, sendRequest } = useAxios()
 
     const [name, setName] = useState('')
+    const [alias, setAlias] = useState('')
     const [description, setDescription] = useState('')
 
     const handleSubmit = async (event) => {
@@ -59,6 +60,21 @@ export const New = () => {
                             />
                             {validationErrors?.name && (
                                 <p className="mt-2 text-sm text-red-600">{validationErrors.name}</p>
+                            )}
+                        </FormGroup>
+                        <FormGroup>
+                            <Label htmlFor="alias">エイリアス</Label>
+                            <TextInput
+                                name="alias"
+                                domId="alias"
+                                value={alias}
+                                onChange={(e) => setAlias(e.target.value)}
+                                required
+                            />
+                            {validationErrors?.alias && (
+                                <p className="mt-2 text-sm text-red-600">
+                                    {validationErrors.alias}
+                                </p>
                             )}
                         </FormGroup>
                         <FormGroup>

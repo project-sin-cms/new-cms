@@ -64,7 +64,7 @@ export const Index = () => {
     const totalItems = data?.payload?.totalItems || 0
 
     // 表示件数テキストの計算
-    const itemsPerPage = items.length > 0 ? items.length : 1; // 1ページあたりの表示件数（データがない場合は1で割るのを避ける）
+    const itemsPerPage = items.length > 0 ? items.length : 1 // 1ページあたりの表示件数（データがない場合は1で割るのを避ける）
     const startItem = (currentPage - 1) * itemsPerPage + 1
     const endItem = Math.min(currentPage * itemsPerPage, totalItems)
 
@@ -162,11 +162,15 @@ export const Index = () => {
                                 ? `${totalItems}件中${startItem}〜${endItem}件表示`
                                 : '0件中0〜0件表示'}
                         </p>
-                        <Paginate currentPage={currentPage} totalPages={totalPages} onPageChange={(page) => {
-                            // ページ変更時の処理（API再取得など）
-                            console.log('Page changed to:', page);
-                            // sendRequest({ method: 'get', url: `content_model?page=${page}` }); // 実際のAPIではこのようにページ番号を渡す
-                        }} />
+                        <Paginate
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={(page) => {
+                                // ページ変更時の処理（API再取得など）
+                                console.log('Page changed to:', page)
+                                // sendRequest({ method: 'get', url: `content_model?page=${page}` }); // 実際のAPIではこのようにページ番号を渡す
+                            }}
+                        />
                     </div>
                 </CardBody>
             </Card>

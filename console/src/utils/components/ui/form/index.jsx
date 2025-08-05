@@ -29,10 +29,6 @@ export const Label = ({ htmlFor = '', children, ...props }) => {
     )
 }
 
-export const TextInput = ({ name = '', domId = '', ...props }) => {
-    return <FTextInput name={name} id={domId} {...props} />
-}
+export const TextInput = FTextInput
 
-export const Textarea = ({ name = '', domId = '', ...props }) => {
-    return <FTextarea name={name} id={domId} {...props} />
-}
+export const Textarea = FTextarea

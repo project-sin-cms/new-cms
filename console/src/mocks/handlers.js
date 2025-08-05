@@ -27,7 +27,7 @@ export const handlers = [
                     data: contentModelData,
                 },
             },
-            { status: 201 }
+            { status: 200 }
         )
     }),
 
@@ -43,5 +43,24 @@ export const handlers = [
             },
             { status: 201 }
         )
+    }),
+
+    http.get(config.endpointUrl + 'content_model/:id', async ({ params }) => {
+        const { id } = params
+        const model = contentModelData.find((item) => item.id === parseInt(id, 10))
+        return HttpResponse.json(
+            {
+                success: true,
+                timestamp: 123456789,
+                payload: {
+                    ...model,
+                },
+            },
+            { status: 200 }
+        )
+    }),
+
+    http.put(config.endpointUrl + 'content_model/:id', async ({ request }) => {
+        return HttpResponse.json({}, { status: 204 })
     }),
 ]

@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cms_{{name_lower}}', function (Blueprint $table) {
+        Schema::create('cms_content_model', function (Blueprint $table) {
             $table->id();
             $table->longText('title')->nullable();
+            $table->longText('alias')->nullable();
+            $table->longText('description')->nullable();
             $table->timestamps();
         });
     }
@@ -23,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cms_{{name_lower}}');
+        Schema::dropIfExists('cms_content_model');
     }
 };

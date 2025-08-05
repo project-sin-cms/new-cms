@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Pagination as FPagination } from 'flowbite-react'
 import { styled } from 'styled-components'
 
-export const Paginate = ({ current = 1, totalPage = 3, onPageChange = () => {} }) => {
+export const Paginate = ({ current = 1, totalPages = 1, onPageChange = () => {} }) => {
     const [currentPage, setCurrentPage] = useState(current)
     const Wapper = styled.div`
         font-size: 0.8rem !important;
@@ -17,7 +17,7 @@ export const Paginate = ({ current = 1, totalPage = 3, onPageChange = () => {} }
                 <FPagination
                     layout="pagination"
                     currentPage={currentPage}
-                    totalPages={totalPage}
+                    totalPages={totalPages}
                     onPageChange={(page) => {
                         setCurrentPage(page)
                         onPageChange(page)

@@ -6,6 +6,8 @@ import {
     TableHead as FTableHead,
     TableHeadCell as FTableHeadCell,
     TableRow as FTableRow,
+    createTheme,
+    ThemeProvider,
 } from 'flowbite-react'
 
 export const ListTable = ({
@@ -14,9 +16,15 @@ export const ListTable = ({
     scopedColumns = {},
     tableProps = { hoverable: true, striped: true },
 }) => {
+    const customTheme = createTheme({
+        table: {
+            wrapper: '',
+        },
+    })
+
     return (
         <>
-            <div className="overflow-x-auto">
+            <ThemeProvider theme={customTheme}>
                 <FTable {...tableProps}>
                     <FTableHead>
                         <FTableRow>
@@ -40,7 +48,7 @@ export const ListTable = ({
                                     {React.Children.toArray(
                                         columns.map((column, idx) => {
                                             if (typeof scopedColumns[column.key] !== 'undefined') {
-                                                return scopedColumns[column.key](item, row)
+                                                return scopedColumns[column.key](item, row, idx)
                                             } else {
                                                 return (
                                                     <FTableCell className={'p-3'} key={idx}>
@@ -55,7 +63,7 @@ export const ListTable = ({
                         })}
                     </FTableBody>
                 </FTable>
-            </div>
+            </ThemeProvider>
         </>
     )
 }

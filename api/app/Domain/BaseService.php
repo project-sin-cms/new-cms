@@ -40,6 +40,7 @@ class BaseService
     {
         $modelName = $this->model;
         $post = $id ? $this->findDetail($id) : new $modelName();
+        $this->validateRequest($request, $post);
         $inputs = $request->request->all();
         foreach ($inputs as $key => $val) {
             $post->{$key} = $val;
@@ -58,5 +59,10 @@ class BaseService
             'id' => $model->id,
             'result' => true
         ];
+    }
+
+    protected function validateRequest(Request $request, mixed $post = null): void
+    {
+        // Default does nothing. Override in subclass.
     }
 }

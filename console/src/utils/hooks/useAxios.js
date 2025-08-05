@@ -22,7 +22,6 @@ export const useAxios = () => {
         setLoading(true)
         setError(null)
         setData(null)
-        setValidationErrors(null)
 
         try {
             const response = await apiClient.request(config)

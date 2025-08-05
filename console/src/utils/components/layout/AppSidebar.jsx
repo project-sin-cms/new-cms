@@ -1,20 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router'
 
-import {
-    BoxCubeIcon,
-    CalenderIcon,
-    ChevronDownIcon,
-    GridIcon,
-    HorizontaLDots,
-    ListIcon,
-    PageIcon,
-    PieChartIcon,
-    PlugInIcon,
-    TableIcon,
-    UserCircleIcon,
-    PencilIcon,
-} from '../../icons'
+import { ChevronDownIcon, GridIcon, ListIcon, PencilIcon } from '../../icons'
 import { useSidebar } from '../../context/SidebarContext'
 
 const navItems = [
@@ -38,8 +25,6 @@ const navItems = [
     },
 ]
 
-const othersItems = []
-
 export const AppSidebar = () => {
     const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar()
     const location = useLocation()
@@ -53,8 +38,8 @@ export const AppSidebar = () => {
 
     useEffect(() => {
         let submenuMatched = false
-        ;['main'].forEach((menuType) => {
-            const items = menuType === 'main' ? navItems : othersItems
+        ;['admin'].forEach((menuType) => {
+            const items = navItems
             items.forEach((nav, index) => {
                 if (nav.subItems) {
                     nav.subItems.forEach((subItem) => {

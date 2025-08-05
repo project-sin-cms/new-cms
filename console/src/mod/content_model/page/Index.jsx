@@ -21,6 +21,7 @@ import { toast } from 'sonner'
 import { useAxios } from '../../../utils/hooks/useAxios' // useAxiosをインポート
 import { Spinner } from '../../../utils/components/ui/spinner' // Spinnerをインポート
 import { Alert } from '../../../utils/components/ui/alert' // Alertをインポート
+import { getUrlParams } from '../../../utils/common'
 
 export const Index = () => {
     const { navigateTo } = useNavigation()
@@ -75,7 +76,7 @@ export const Index = () => {
     }
 
     const columns = [
-        { key: 'name', label: '名前' },
+        { key: 'title', label: '名前' },
         { key: 'actions', label: '', _props: { style: { width: '10%' } } },
     ]
 
@@ -83,7 +84,7 @@ export const Index = () => {
     const items = data?.payload?.data || []
     const currentPage = data?.payload?.current || 1
     const totalPages = data?.payload?.pages || 1
-    const totalItems = data?.payload?.totalItems || 0
+    const totalItems = data?.payload?.total || 0
 
     // 表示件数テキストの計算
     const itemsPerPage = items.length > 0 ? items.length : 1 // 1ページあたりの表示件数（データがない場合は1で割るのを避ける）
@@ -190,10 +191,11 @@ export const Index = () => {
                         <Paginate
                             currentPage={currentPage}
                             totalPages={totalPages}
-                            onPageChange={(page) => {
-                                // ページ変更時の処理（API再取得など）
-                                console.log('Page changed to:', page)
-                                // sendRequest({ method: 'get', url: `content_model?page=${page}` }); // 実際のAPIではこのようにページ番号を渡す
+                            onPageChange={(current) => {
+                                fetchContentModels({
+                                    method: 'get',
+                                    url: `content_model?` + getUrlParams({ current }),
+                                })
                             }}
                         />
                     </div>

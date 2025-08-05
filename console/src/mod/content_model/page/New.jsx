@@ -14,7 +14,7 @@ export const New = () => {
     const { navigateTo } = useNavigation()
     const { error, loading, validationErrors, sendRequest } = useAxios()
 
-    const [name, setName] = useState('')
+    const [title, setTitle] = useState('')
     const [alias, setAlias] = useState('')
     const [description, setDescription] = useState('')
 
@@ -23,7 +23,7 @@ export const New = () => {
         const result = await sendRequest({
             method: 'post',
             url: 'content_model/store',
-            data: { name, description },
+            data: { title, alias, description },
         })
 
         if (result.success) {
@@ -50,23 +50,25 @@ export const New = () => {
                         )}
 
                         <FormGroup>
-                            <Label htmlFor="name">名前</Label>
+                            <Label htmlFor="title">名前</Label>
                             <TextInput
-                                name="name"
-                                domId="name"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
+                                name="title"
+                                id="title"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
                                 required
                             />
-                            {validationErrors?.name && (
-                                <p className="mt-2 text-sm text-red-600">{validationErrors.name}</p>
+                            {validationErrors?.title && (
+                                <p className="mt-2 text-sm text-red-600">
+                                    {validationErrors.title}
+                                </p>
                             )}
                         </FormGroup>
                         <FormGroup>
                             <Label htmlFor="alias">エイリアス</Label>
                             <TextInput
                                 name="alias"
-                                domId="alias"
+                                id="alias"
                                 value={alias}
                                 onChange={(e) => setAlias(e.target.value)}
                                 required
@@ -81,7 +83,7 @@ export const New = () => {
                             <Label htmlFor="description">説明</Label>
                             <Textarea
                                 name="description"
-                                domId="description"
+                                id="description"
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
                             />

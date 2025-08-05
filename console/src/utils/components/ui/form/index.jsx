@@ -32,3 +32,12 @@ export const Label = ({ htmlFor = '', children, ...props }) => {
 export const TextInput = FTextInput
 
 export const Textarea = FTextarea
+
+export const FormBuilder = ({ formType = 'text', ...props }) => {
+    switch (formType) {
+        case 'textarea':
+            return <Textarea {...props} />
+        default:
+            return <TextInput {...props} />
+    }
+}

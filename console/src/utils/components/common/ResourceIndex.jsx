@@ -93,9 +93,9 @@ export const ResourceIndex = ({
 
     const scopedColumns = {
         ...addScopedColumns,
-        actions: (item, row) => {
+        actions: (item, row, idx) => {
             return (
-                <td>
+                <td key={idx}>
                     <div className="flex justify-end">
                         <Dropdown
                             label=""
@@ -195,17 +195,17 @@ export const ResourceIndex = ({
                     </div>
                 </CardHeader>
                 <CardBody>
-                    {loading && (
-                        <div className="flex items-center justify-center">
-                            <Spinner size="xl" />
-                        </div>
-                    )}
                     {error && (
                         <Alert color="failure" className="mb-4">
                             データの読み込み中にエラーが発生しました: {error.message}
                         </Alert>
                     )}
                     <ListTable columns={columns} items={items} scopedColumns={scopedColumns} />
+                    {loading && (
+                        <div className="flex items-center justify-center">
+                            <Spinner size="xl" />
+                        </div>
+                    )}
                     <div className="flex items-center justify-between w-full mt-1 border-t">
                         <p className="text-sm font-light text-gray-500">
                             {totalItems > 0

@@ -25,32 +25,54 @@ import { Alert } from '../../../utils/components/ui/alert' // Alertをインポ�
 export const Index = () => {
     const { navigateTo } = useNavigation()
     const [showModal, setShowModal] = useState(false)
+    const [deleteId, setDeleteId] = useState(null)
     const location = useLocation()
     const navigate = useNavigate()
 
     // useAxiosフックを呼び出し、一覧取得用のsendRequestを取得
-    const { data, error, loading, sendRequest } = useAxios()
+    const { data, error, loading, sendRequest: fetchContentModels } = useAxios()
+    const { sendRequest: deleteContentModel } = useAxios()
 
     // 最後に表示したトーストのメッセージ内容を記憶するref
     const currentMessageRef = useRef(null)
 
     useEffect(() => {
-        if (location.state?.message && location.state.message !== currentMessageRef.current) {
-            toast.success(location.state.message)
-            currentMessageRef.current = location.state.message
+        if (
+            location.state?.toast?.message &&
+            location.state.toast.message !== currentMessageRef.current
+        ) {
+            toast.success(location.state.toast.message)
+            currentMessageRef.current = location.state.toast.message
             navigate(location.pathname, { replace: true, state: {} })
-        } else if (!location.state?.message && currentMessageRef.current) {
+        } else if (!location.state?.toast?.message && currentMessageRef.current) {
             currentMessageRef.current = null
         }
     }, [location, navigate])
 
     // コンポーネントマウント時に一覧データを取得
     useEffect(() => {
-        sendRequest({
+        fetchContentModels({
             method: 'get',
             url: 'content_model', // 一覧取得APIのエンドポイント
         })
     }, []) // 依存配列を空にする
+
+    const handleDelete = async () => {
+        try {
+            await deleteContentModel({
+                method: 'DELETE',
+                url: `content_model/${deleteId}`,
+            })
+            setShowModal(false)
+            toast.success('削除しました')
+            fetchContentModels({
+                method: 'get',
+                url: 'content_model',
+            })
+        } catch (err) {
+            toast.error('削除に失敗しました')
+        }
+    }
 
     const columns = [
         { key: 'name', label: '名前' },
@@ -94,7 +116,10 @@ export const Index = () => {
                                 編集
                             </DropdownItem>
                             <DropdownItem
-                                onClick={() => setShowModal(true)}
+                                onClick={() => {
+                                    setDeleteId(item.id)
+                                    setShowModal(true)
+                                }}
                                 icon={HiOutlineXCircle}
                                 className="text-red-800"
                             >
@@ -121,7 +146,7 @@ export const Index = () => {
                                     size="xs"
                                     outline
                                     onClick={() =>
-                                        sendRequest({ method: 'get', url: 'content_model' })
+                                        fetchContentModels({ method: 'get', url: 'content_model' })
                                     }
                                     disabled={loading}
                                 >
@@ -182,7 +207,7 @@ export const Index = () => {
                             削除しますか？
                         </h3>
                         <div className="flex justify-center gap-4">
-                            <Button color="red" onClick={() => setShowModal(false)}>
+                            <Button color="red" onClick={handleDelete}>
                                 はい
                             </Button>
                             <Button color="alternative" onClick={() => setShowModal(false)}>

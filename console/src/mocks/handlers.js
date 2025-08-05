@@ -63,4 +63,8 @@ export const handlers = [
     http.put(config.endpointUrl + 'content_model/:id', async ({ request }) => {
         return HttpResponse.json({}, { status: 204 })
     }),
+
+    http.delete(config.endpointUrl + 'content_model/:id', async ({ request }) => {
+        return HttpResponse.json({}, { status: 204 })
+    }),
 ]

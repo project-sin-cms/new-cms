@@ -87,13 +87,13 @@ export const ResourceForm = ({ breads = [], config, id = null, formItem = [] }) 
                                 <Alert color="failure">エラーが発生しました: {error.message}</Alert>
                             )}
                             {formItem.map((item, index) => {
-                                const { name, required = false, ...rest } = item
+                                const { title, required = false, ...rest } = item
                                 const formId = rest.id
                                 return (
                                     <>
                                         <FormGroup key={index}>
-                                            <Label htmlFor={rest.id}>
-                                                {name}
+                                            <Label htmlFor={formId}>
+                                                {title}
                                                 {required && (
                                                     <span className="text-red-600">*</span>
                                                 )}

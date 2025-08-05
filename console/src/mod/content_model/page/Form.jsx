@@ -3,9 +3,9 @@ import { config } from '../utils/config'
 import { ResourceForm } from '../../../utils/components/common/ResourceForm'
 
 const formItem = [
-    { name: 'タイトル', id: 'title', required: true },
-    { name: 'エイリアス', id: 'alias', required: true },
-    { name: '説明', id: 'description', formType: 'textarea' },
+    { title: 'タイトル', id: 'title', required: true },
+    { title: 'エイリアス', id: 'alias', required: true },
+    { title: '説明', id: 'description', formType: 'textarea' },
 ]
 
 export const New = () => {

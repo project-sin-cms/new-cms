@@ -23,6 +23,11 @@ const navItems = [
         icon: <PencilIcon />,
         path: '/content',
     },
+    {
+        name: 'Action Log',
+        icon: <ListIcon />,
+        path: '/action_log',
+    },
 ]
 
 export const AppSidebar = () => {

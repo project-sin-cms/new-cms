@@ -9,7 +9,19 @@ import { Button } from '../ui/button'
 import { Spinner } from 'flowbite-react'
 import { HiOutlineSave } from 'react-icons/hi'
 
-export const ResourceForm = ({ breads = [], config, id = null, formItem = [] }) => {
+/**
+ * 汎用リソースフォームコンポーネント（作成・編集）。
+ *
+ * @component
+ * @param {Object} props
+ * @param {Object} props.options 設定オプション
+ * @param {Array} [props.options.breads=[]] パンくずリスト
+ * @param {Object} props.options.config リソースの設定（end_point, path など）
+ * @param {string} [props.options.id=null] 編集対象ID（nullなら新規作成）
+ * @param {Array} props.options.formItem フォームフィールド定義（id, title, type などを含む）
+ */
+export const ResourceForm = ({ options }) => {
+    const { breads = [], config, id = null, formItem = [] } = options
     const { navigateTo } = useNavigation()
     const { error, loading, validationErrors, sendRequest } = useAxios()
 

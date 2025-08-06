@@ -12,7 +12,7 @@ export const Index = () => {
 
     return (
         <>
-            <ResourceIndex breads={breads} config={config} columns={columns} />
+            <ResourceIndex options={{ breads, config, columns, isNew: false }} />
         </>
     )
 }

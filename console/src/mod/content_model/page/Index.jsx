@@ -26,10 +26,12 @@ export const Index = () => {
     return (
         <>
             <ResourceIndex
-                breads={breads}
-                config={config}
-                columns={columns}
-                addDropdownItems={addDropdownItems}
+                options={{
+                    breads,
+                    config,
+                    columns,
+                    addDropdownItems,
+                }}
             />
         </>
     )

@@ -13,7 +13,7 @@ export const New = () => {
 
     return (
         <>
-            <ResourceForm breads={breads} config={config} formItem={formItem} />
+            <ResourceForm options={{ breads, config, formItem }} />
         </>
     )
 }
@@ -24,7 +24,7 @@ export const Edit = () => {
 
     return (
         <>
-            <ResourceForm breads={breads} config={config} id={id} formItem={formItem} />
+            <ResourceForm options={{ breads, config, formItem, id }} />
         </>
     )
 }

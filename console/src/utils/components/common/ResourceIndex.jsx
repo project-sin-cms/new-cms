@@ -6,8 +6,7 @@ import { Dropdown, DropdownItem } from '../ui/dropdown'
 import { Button, ButtonGroup } from '../ui/button'
 import { MoreDotIcon } from '../../icons'
 import { Card, CardBody, CardHeader } from '../ui/card'
-import { Breadcrumb, BreadNavigation } from '../ui/breadcrumb'
-import { BreadcrumbItem } from 'flowbite-react'
+import { BreadNavigation } from '../ui/breadcrumb'
 import { Spinner } from '../ui/spinner'
 import { Alert } from '../ui/alert'
 import { ListTable } from '../ui/table'
@@ -26,17 +25,40 @@ import { toast } from 'sonner'
 import { useSessionStorage } from '../../hooks/useSessionStorage'
 import { Select } from '../ui/form'
 
-export const ResourceIndex = ({
-    breads = [],
-    config,
-    columns,
-    isEdit = true,
-    isDelete = true,
-    addScopedColumns = {},
-    addDropdownItems = [],
-    customNewAction = null,
-    baseParams = {},
-}) => {
+/**
+ * 汎用的なリソース一覧表示用コンポーネント。
+ *
+ * @component
+ * @param {Object} props
+ * @param {Object} props.options コンポーネントの設定オプション
+ * @param {Array} [props.options.breads=[]] パンくずリスト表示用配列
+ * @param {Object} props.options.config リソースの設定情報
+ * @param {string} props.options.config.name リソース名
+ * @param {string} props.options.config.end_point APIのエンドポイントURL
+ * @param {string} props.options.config.path 新規作成・編集画面のパスベース
+ * @param {Array} props.options.columns テーブル列定義の配列
+ * @param {boolean} [props.options.isNew=true] 新規作成ボタンを表示するか
+ * @param {boolean} [props.options.isEdit=true] 編集アクションを表示するか
+ * @param {boolean} [props.options.isDelete=true] 削除アクションを表示するか
+ * @param {Object} [props.options.addScopedColumns={}] テーブルに追加する独自カラム定義
+ * @param {Array} [props.options.addDropdownItems=[]] 各行のアクションに追加するドロップダウン項目
+ * @param {Function|null} [props.options.customNewAction=null] 新規作成ボタンのカスタム処理関数
+ * @param {Object} [props.options.baseParams={}] 一覧取得APIに付与する追加クエリパラメータ
+ */
+export const ResourceIndex = ({ options }) => {
+    const {
+        breads = [],
+        config,
+        columns,
+        isNew = true,
+        isEdit = true,
+        isDelete = true,
+        addScopedColumns = {},
+        addDropdownItems = [],
+        customNewAction = null,
+        baseParams = {},
+    } = options
+
     const { navigateTo } = useNavigation()
     const [showModal, setShowModal] = useState(false)
     const [deleteId, setDeleteId] = useState(null)
@@ -198,20 +220,22 @@ export const ResourceIndex = ({
                                     )}
                                     更新
                                 </Button>
-                                <Button
-                                    size="xs"
-                                    outline
-                                    onClick={() => {
-                                        if (!customNewAction) {
-                                            navigateTo(config.path + '/new')
-                                        } else {
-                                            customNewAction()
-                                        }
-                                    }}
-                                >
-                                    <HiOutlinePlusCircle className="me-1" />
-                                    追加
-                                </Button>
+                                {isNew && (
+                                    <Button
+                                        size="xs"
+                                        outline
+                                        onClick={() => {
+                                            if (!customNewAction) {
+                                                navigateTo(config.path + '/new')
+                                            } else {
+                                                customNewAction()
+                                            }
+                                        }}
+                                    >
+                                        <HiOutlinePlusCircle className="me-1" />
+                                        追加
+                                    </Button>
+                                )}
                             </ButtonGroup>
                         </div>
                     </div>

@@ -24,12 +24,14 @@ export const Index = () => {
             {loading && <Spinner />}
             {!loading && (
                 <ResourceIndex
-                    breads={breads}
-                    config={config}
-                    columns={columns}
-                    baseParams={{ model_id }}
-                    customNewAction={() => {
-                        setShowModal(true)
+                    options={{
+                        breads,
+                        config,
+                        columns,
+                        baseParams: { model_id },
+                        customNewAction: () => {
+                            setShowModal(true)
+                        },
                     }}
                 />
             )}

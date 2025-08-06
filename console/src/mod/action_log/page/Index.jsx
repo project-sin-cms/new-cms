@@ -5,7 +5,8 @@ export const Index = () => {
     const breads = [{ name: config.name }]
 
     const columns = [
-        { key: 'title', label: '名前' },
+        { key: 'title', label: 'タイトル' },
+        { key: 'method', label: 'メソッド' },
         { key: 'actions', label: '', _props: { style: { width: '10%' } } },
     ]
 

@@ -14,4 +14,13 @@ export const handlers = [
             },
         })
     }),
+
+    http.get(config.endpointUrl + 'action_log', () => {
+        return new HttpResponse(
+            {
+                title: 'aaa',
+            },
+            { status: 200 }
+        )
+    }),
 ]

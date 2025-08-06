@@ -13,13 +13,11 @@ const navItems = [
     {
         name: 'Content Model',
         icon: <ListIcon />,
-        subItems: [
-            { name: 'model', path: '/content_model', pro: false },
-            { name: 'fields', path: '/content_fields', pro: false },
-        ],
+        path: '/content_model',
+        // subItems: [{ name: 'model', path: '/content_model', pro: false }],
     },
     {
-        name: 'Content',
+        name: '新着情報',
         icon: <PencilIcon />,
         path: '/content',
     },

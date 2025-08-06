@@ -34,6 +34,8 @@ export const ResourceIndex = ({
     isDelete = true,
     addScopedColumns = {},
     addDropdownItems = [],
+    customNewAction = null,
+    baseParams = {},
 }) => {
     const { navigateTo } = useNavigation()
     const [showModal, setShowModal] = useState(false)
@@ -68,7 +70,7 @@ export const ResourceIndex = ({
             method: 'get',
             url:
                 `${config.end_point}?` +
-                getUrlParams({ current: currentPage, limit: itemsPerPage }), // 一覧取得APIのエンドポイント
+                getUrlParams({ current: currentPage, limit: itemsPerPage, ...baseParams }), // 一覧取得APIのエンドポイント
         })
     }, [currentPage, itemsPerPage]) // 依存配列を空にする
 
@@ -88,7 +90,7 @@ export const ResourceIndex = ({
                     method: 'get',
                     url:
                         `${config.end_point}?` +
-                        getUrlParams({ current: currentPage, limit: itemsPerPage }),
+                        getUrlParams({ current: currentPage, limit: itemsPerPage, ...baseParams }),
                 })
             }
         } catch (err) {
@@ -145,10 +147,14 @@ export const ResourceIndex = ({
                                     削除
                                 </DropdownItem>
                             )}
-                            {addDropdownItems.map((item, index) => {
-                                const { name, ...rest } = item
+                            {addDropdownItems.map((dropdown, index) => {
+                                const { name, onClick = () => {}, ...rest } = dropdown
                                 return (
-                                    <DropdownItem key={index} {...rest}>
+                                    <DropdownItem
+                                        key={index}
+                                        onClick={() => onClick(item, row)}
+                                        {...rest}
+                                    >
                                         {name}
                                     </DropdownItem>
                                 )
@@ -192,6 +198,7 @@ export const ResourceIndex = ({
                                                 getUrlParams({
                                                     current: currentPage,
                                                     limit: itemsPerPage,
+                                                    ...baseParams,
                                                 }),
                                         })
                                     }
@@ -207,7 +214,13 @@ export const ResourceIndex = ({
                                 <Button
                                     size="xs"
                                     outline
-                                    onClick={() => navigateTo(config.path + '/new')}
+                                    onClick={() => {
+                                        if (!customNewAction) {
+                                            navigateTo(config.path + '/new')
+                                        } else {
+                                            customNewAction()
+                                        }
+                                    }}
                                 >
                                     <HiOutlinePlusCircle className="me-1" />
                                     追加

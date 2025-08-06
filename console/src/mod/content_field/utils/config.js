@@ -1,9 +1,8 @@
 import {} from 'react-icons'
-import { HiOutlineDocumentText } from 'react-icons/hi'
 
 export const config = {
     name: 'Content Field',
-    path: '/content_field/:model_id',
+    path: '/content/:model_id/field',
     mod_name: 'content_field',
     end_point: 'content_field',
 }

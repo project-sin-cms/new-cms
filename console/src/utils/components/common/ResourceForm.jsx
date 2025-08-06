@@ -3,7 +3,7 @@ import { useAxios } from '../../hooks/useAxios'
 import { useNavigation } from '../../hooks/useNavigation'
 import { Form, FormBuilder, FormGroup, Label } from '../ui/form'
 import { Card, CardBody, CardFooter, CardHeader } from '../ui/card'
-import { Breadcrumb, BreadcrumbItem } from '../ui/breadcrumb'
+import { Breadcrumb, BreadcrumbItem, BreadNavigation } from '../ui/breadcrumb'
 import { Alert } from '../ui/alert'
 import { Button } from '../ui/button'
 import { Spinner } from 'flowbite-react'
@@ -65,20 +65,7 @@ export const ResourceForm = ({ breads = [], config, id = null, formItem = [] }) 
         <>
             <Card>
                 <CardHeader>
-                    <Breadcrumb>
-                        {breads.map((item, index) => (
-                            <BreadcrumbItem
-                                key={index}
-                                onClick={() => {
-                                    if (typeof item.path !== 'undefined') {
-                                        navigateTo(item.path)
-                                    }
-                                }}
-                            >
-                                {item.name}
-                            </BreadcrumbItem>
-                        ))}
-                    </Breadcrumb>
+                    <BreadNavigation breads={breads} />
                 </CardHeader>
                 <CardBody>
                     <Form onSubmit={handleSubmit}>

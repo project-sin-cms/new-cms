@@ -13,7 +13,7 @@ const navItems = [
     {
         name: 'Content Model',
         icon: <ListIcon />,
-        path: '/content_model',
+        path: '/content/model',
         // subItems: [{ name: 'model', path: '/content_model', pro: false }],
     },
     {

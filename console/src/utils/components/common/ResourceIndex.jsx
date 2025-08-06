@@ -6,7 +6,7 @@ import { Dropdown, DropdownItem } from '../ui/dropdown'
 import { Button, ButtonGroup } from '../ui/button'
 import { MoreDotIcon } from '../../icons'
 import { Card, CardBody, CardHeader } from '../ui/card'
-import { Breadcrumb } from '../ui/breadcrumb'
+import { Breadcrumb, BreadNavigation } from '../ui/breadcrumb'
 import { BreadcrumbItem } from 'flowbite-react'
 import { Spinner } from '../ui/spinner'
 import { Alert } from '../ui/alert'
@@ -171,20 +171,7 @@ export const ResourceIndex = ({
             <Card>
                 <CardHeader>
                     <div className="flex items-center justify-between w-full">
-                        <Breadcrumb>
-                            {breads.map((bread, index) => (
-                                <BreadcrumbItem
-                                    key={index}
-                                    onClick={(e) => {
-                                        if (typeof bread.path !== 'undefined') {
-                                            navigateTo(bread.path)
-                                        }
-                                    }}
-                                >
-                                    {bread.name}
-                                </BreadcrumbItem>
-                            ))}
-                        </Breadcrumb>
+                        <BreadNavigation breads={breads} />
                         <div>
                             <ButtonGroup>
                                 <Button

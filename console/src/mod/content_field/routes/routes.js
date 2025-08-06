@@ -11,11 +11,11 @@ export const routes = [
         menu: true,
     },
     {
-        path: `${config.path}new`,
+        path: `${config.path}/new`,
         element: New,
     },
     {
-        path: `${config.path}edit/:id`,
+        path: `${config.path}/edit/:id`,
         element: Edit,
     },
 ]

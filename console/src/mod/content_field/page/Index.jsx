@@ -5,13 +5,14 @@ import { config, fieldItem } from '../utils/config'
 import { useState } from 'react'
 import { Modal, ModalBody, ModalHeader } from '../../../utils/components/ui/modal'
 import { Button } from '../../../utils/components/ui/button'
-import { Card, CardBody } from '../../../utils/components/ui/card'
 import { Col, Row } from '../../../utils/components/ui/grid'
+import { useNavigation } from '../../../utils/hooks/useNavigation'
 
 export const Index = () => {
     const { model_id, getBreads, loading } = useContetField()
     const breads = getBreads([{ name: config.name }])
     const [showModal, setShowModal] = useState(false)
+    const { navigateTo } = useNavigation()
 
     const columns = [
         { key: 'title', label: '名前' },
@@ -39,7 +40,17 @@ export const Index = () => {
                         {fieldItem.map((field, index) => {
                             return (
                                 <Col col={4} key={index}>
-                                    <Button color={'dark'} outline className="w-full h-20 text-1xl">
+                                    <Button
+                                        color={'dark'}
+                                        outline
+                                        className="w-full h-20 text-1xl"
+                                        onClick={() => {
+                                            navigateTo(
+                                                `${config.path.replace(':model_id', model_id)}/new`,
+                                                { field_type: field.value }
+                                            )
+                                        }}
+                                    >
                                         {field.icon && (
                                             <>
                                                 <field.icon className="me-2" />

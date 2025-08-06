@@ -23,6 +23,8 @@ import {
 import { getUrlParams } from '../../common'
 import { toast } from 'sonner'
 
+import { useSessionStorage } from '../../hooks/useSessionStorage'
+
 export const ResourceIndex = ({
     breads = [],
     config,
@@ -37,6 +39,10 @@ export const ResourceIndex = ({
     const [deleteId, setDeleteId] = useState(null)
     const location = useLocation()
     const navigate = useNavigate()
+    const [currentPage, setCurrentPage] = useSessionStorage(
+        `${config.name}_current_page`,
+        1
+    )
 
     // useAxiosフックを呼び出し、一覧取得用のsendRequestを取得
     const { data, error, loading, sendRequest: fetchContentModels } = useAxios()
@@ -59,9 +65,9 @@ export const ResourceIndex = ({
     useEffect(() => {
         fetchContentModels({
             method: 'get',
-            url: config.end_point, // 一覧取得APIのエンドポイント
+            url: `${config.end_point}?` + getUrlParams({ current: currentPage }), // 一覧取得APIのエンドポイント
         })
-    }, []) // 依存配列を空にする
+    }, [currentPage]) // 依存配列を空にする
 
     const handleDelete = async () => {
         try {
@@ -71,10 +77,15 @@ export const ResourceIndex = ({
             })
             setShowModal(false)
             toast.success('削除しました')
-            fetchContentModels({
-                method: 'get',
-                url: config.end_point,
-            })
+
+            if (items.length === 1 && currentPage > 1) {
+                setCurrentPage(currentPage - 1)
+            } else {
+                fetchContentModels({
+                    method: 'get',
+                    url: `${config.end_point}?` + getUrlParams({ current: currentPage }),
+                })
+            }
         } catch (err) {
             toast.error('削除に失敗しました')
         }
@@ -82,7 +93,6 @@ export const ResourceIndex = ({
 
     // APIから取得したデータをitemsとして使用
     const items = data?.payload?.data || []
-    const currentPage = data?.payload?.current || 1
     const totalPages = data?.payload?.pages || 1
     const totalItems = data?.payload?.total || 0
 
@@ -171,7 +181,12 @@ export const ResourceIndex = ({
                                     size="xs"
                                     outline
                                     onClick={() =>
-                                        fetchContentModels({ method: 'get', url: 'content_model' })
+                                        fetchContentModels({
+                                            method: 'get',
+                                            url:
+                                                `${config.end_point}?` +
+                                                getUrlParams({ current: currentPage }),
+                                        })
                                     }
                                     disabled={loading}
                                 >
@@ -215,12 +230,7 @@ export const ResourceIndex = ({
                         <Paginate
                             currentPage={currentPage}
                             totalPages={totalPages}
-                            onPageChange={(current) => {
-                                fetchContentModels({
-                                    method: 'get',
-                                    url: `content_model?` + getUrlParams({ current }),
-                                })
-                            }}
+                            onPageChange={setCurrentPage}
                         />
                     </div>
                 </CardBody>

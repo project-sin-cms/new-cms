@@ -90,31 +90,27 @@ export const ResourceForm = ({ breads = [], config, id = null, formItem = [] }) 
                                 const { title, required = false, ...rest } = item
                                 const formId = rest.id
                                 return (
-                                    <>
-                                        <FormGroup key={index}>
-                                            <Label htmlFor={formId}>
-                                                {title}
-                                                {required && (
-                                                    <span className="text-red-600">*</span>
-                                                )}
-                                            </Label>
-                                            <FormBuilder
-                                                defaultValue={inputs?.[formId]}
-                                                onChange={(e) => {
-                                                    setInputs({
-                                                        ...inputs,
-                                                        [formId]: e.target.value,
-                                                    })
-                                                }}
-                                                {...rest}
-                                            />
-                                            {validationErrors?.[formId] && (
-                                                <p className="mt-2 text-sm text-red-600">
-                                                    {validationErrors[formId]}
-                                                </p>
-                                            )}
-                                        </FormGroup>
-                                    </>
+                                    <FormGroup key={index}>
+                                        <Label htmlFor={formId}>
+                                            {title}
+                                            {required && <span className="text-red-600">*</span>}
+                                        </Label>
+                                        <FormBuilder
+                                            defaultValue={inputs?.[formId]}
+                                            onChange={(e) => {
+                                                setInputs({
+                                                    ...inputs,
+                                                    [formId]: e.target.value,
+                                                })
+                                            }}
+                                            {...rest}
+                                        />
+                                        {validationErrors?.[formId] && (
+                                            <p className="mt-2 text-sm text-red-600">
+                                                {validationErrors[formId]}
+                                            </p>
+                                        )}
+                                    </FormGroup>
                                 )
                             })}
                         </div>

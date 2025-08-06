@@ -24,6 +24,7 @@ import { getUrlParams } from '../../common'
 import { toast } from 'sonner'
 
 import { useSessionStorage } from '../../hooks/useSessionStorage'
+import { Select } from '../ui/form'
 
 export const ResourceIndex = ({
     breads = [],
@@ -39,10 +40,10 @@ export const ResourceIndex = ({
     const [deleteId, setDeleteId] = useState(null)
     const location = useLocation()
     const navigate = useNavigate()
-    const [currentPage, setCurrentPage] = useSessionStorage(
-        `${config.name}_current_page`,
-        1
-    )
+    const [currentPage, setCurrentPage] = useSessionStorage(`${config.name}_current_page`, 1)
+    const [itemsPerPage, setItemsPerPage] = useSessionStorage(`${config.name}_items_per_page`, 10)
+
+    const limitOptions = [5, 10, 50, 100]
 
     // useAxiosフックを呼び出し、一覧取得用のsendRequestを取得
     const { data, error, loading, sendRequest: fetchContentModels } = useAxios()
@@ -65,9 +66,11 @@ export const ResourceIndex = ({
     useEffect(() => {
         fetchContentModels({
             method: 'get',
-            url: `${config.end_point}?` + getUrlParams({ current: currentPage }), // 一覧取得APIのエンドポイント
+            url:
+                `${config.end_point}?` +
+                getUrlParams({ current: currentPage, limit: itemsPerPage }), // 一覧取得APIのエンドポイント
         })
-    }, [currentPage]) // 依存配列を空にする
+    }, [currentPage, itemsPerPage]) // 依存配列を空にする
 
     const handleDelete = async () => {
         try {
@@ -83,7 +86,9 @@ export const ResourceIndex = ({
             } else {
                 fetchContentModels({
                     method: 'get',
-                    url: `${config.end_point}?` + getUrlParams({ current: currentPage }),
+                    url:
+                        `${config.end_point}?` +
+                        getUrlParams({ current: currentPage, limit: itemsPerPage }),
                 })
             }
         } catch (err) {
@@ -97,7 +102,6 @@ export const ResourceIndex = ({
     const totalItems = data?.payload?.total || 0
 
     // 表示件数テキストの計算
-    const itemsPerPage = 10
     const startItem = (currentPage - 1) * itemsPerPage + 1
     const endItem = Math.min(currentPage * itemsPerPage, totalItems)
 
@@ -185,7 +189,10 @@ export const ResourceIndex = ({
                                             method: 'get',
                                             url:
                                                 `${config.end_point}?` +
-                                                getUrlParams({ current: currentPage }),
+                                                getUrlParams({
+                                                    current: currentPage,
+                                                    limit: itemsPerPage,
+                                                }),
                                         })
                                     }
                                     disabled={loading}
@@ -222,16 +229,34 @@ export const ResourceIndex = ({
                         </div>
                     )}
                     <div className="flex items-center justify-between w-full mt-1 border-t">
-                        <p className="text-sm font-light text-gray-500">
-                            {totalItems > 0
-                                ? `${totalItems}件中${startItem}〜${endItem}件表示`
-                                : '0件中0〜0件表示'}
-                        </p>
-                        <Paginate
-                            currentPage={currentPage}
-                            totalPages={totalPages}
-                            onPageChange={setCurrentPage}
-                        />
+                        <div className="flex items-center">
+                            <p className="text-sm font-light text-gray-500 me-2">
+                                {totalItems > 0
+                                    ? `${totalItems}件中${startItem}〜${endItem}件表示`
+                                    : '0件中0〜0件表示'}
+                            </p>
+                        </div>
+                        <div className="flex items-center">
+                            <div className="w-28 me-2">
+                                <Select
+                                    value={itemsPerPage}
+                                    onChange={(e) => {
+                                        setItemsPerPage(parseInt(e.target.value, 10))
+                                        setCurrentPage(1)
+                                    }}
+                                    items={limitOptions.map((limit) => ({
+                                        value: limit,
+                                        label: `${limit}件`,
+                                    }))}
+                                    style={{ fontSize: '0.8rem', padding: '5px' }}
+                                />
+                            </div>
+                            <Paginate
+                                currentPage={currentPage}
+                                totalPages={totalPages}
+                                onPageChange={setCurrentPage}
+                            />
+                        </div>
                     </div>
                 </CardBody>
             </Card>

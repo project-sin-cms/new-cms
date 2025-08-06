@@ -33,6 +33,18 @@ export const TextInput = FTextInput
 
 export const Textarea = FTextarea
 
+export const Select = ({ items, ...props }) => {
+    return (
+        <FSelect {...props}>
+            {items.map((item) => (
+                <option key={item.value} value={item.value}>
+                    {item.label}
+                </option>
+            ))}
+        </FSelect>
+    )
+}
+
 export const FormBuilder = ({ formType = 'text', ...props }) => {
     switch (formType) {
         case 'textarea':

@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, forwardRef, useImperativeHandle } from 'react'
 import { useAxios } from '../../hooks/useAxios'
 import { useNavigation } from '../../hooks/useNavigation'
 import { Form, FormBuilder, FormGroup, Label } from '../ui/form'
 import { Card, CardBody, CardFooter, CardHeader } from '../ui/card'
-import { Breadcrumb, BreadcrumbItem, BreadNavigation } from '../ui/breadcrumb'
+import { BreadNavigation } from '../ui/breadcrumb'
 import { Alert } from '../ui/alert'
 import { Button } from '../ui/button'
 import { Spinner } from 'flowbite-react'
@@ -20,7 +20,7 @@ import { HiOutlineSave } from 'react-icons/hi'
  * @param {string} [props.options.id=null] 編集対象ID（nullなら新規作成）
  * @param {Array} props.options.formItem フォームフィールド定義（id, title, type などを含む）
  */
-export const ResourceForm = ({ options }) => {
+export const ResourceForm = forwardRef(({ options }, ref) => {
     const { breads = [], config, id = null, formItem = [] } = options
     const { navigateTo } = useNavigation()
     const { error, loading, validationErrors, sendRequest } = useAxios()
@@ -32,6 +32,8 @@ export const ResourceForm = ({ options }) => {
         })
         return result
     })
+
+    useImperativeHandle(ref, () => ({}), [])
 
     useEffect(() => {
         if (!id) return
@@ -57,11 +59,18 @@ export const ResourceForm = ({ options }) => {
         fetchContentModel()
     }, [id, sendRequest])
 
+    const setInputVal = (formId, value) => {
+        setInputs({
+            ...inputs,
+            [formId]: value,
+        })
+    }
+
     const handleSubmit = async (event) => {
         event.preventDefault()
         const result = await sendRequest({
             method: !id ? 'post' : 'put',
-            url: !id ? `${config.path}/store` : `${config.path}/${id}`,
+            url: !id ? `${config.end_point}/store` : `${config.end_point}/${id}`,
             data: inputs,
         })
 
@@ -96,11 +105,8 @@ export const ResourceForm = ({ options }) => {
                                         </Label>
                                         <FormBuilder
                                             defaultValue={inputs?.[formId]}
-                                            onChange={(e) => {
-                                                setInputs({
-                                                    ...inputs,
-                                                    [formId]: e.target.value,
-                                                })
+                                            onChange={(value, e) => {
+                                                setInputVal(formId, value)
                                             }}
                                             {...rest}
                                         />
@@ -126,4 +132,4 @@ export const ResourceForm = ({ options }) => {
             </Card>
         </>
     )
-}
+})

@@ -10,6 +10,16 @@ import {
     ThemeProvider,
 } from 'flowbite-react'
 
+/**
+ * ListTable component wrapping flowbite-react's Table with theme provider and scoped columns support.
+ *
+ * @param {object} props
+ * @param {Array} props.columns - Column definitions with label and key.
+ * @param {Array} props.items - Array of data objects to render as rows.
+ * @param {Object.<string, function>} [props.scopedColumns={}] - Optional render functions for specific columns.
+ * @param {object} [props.tableProps={ hoverable: true, striped: true }] - Props to pass to the Table component.
+ * @returns {JSX.Element}
+ */
 export const ListTable = ({
     columns = [],
     items = [],

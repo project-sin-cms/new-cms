@@ -1,15 +1,14 @@
 import { ResourceIndex } from '../../../utils/components/common/ResourceIndex'
-import { useContetField } from '../utils/hooks/useContentField'
-import { Spinner } from '../../../utils/components/ui/spinner'
 import { config, fieldItem } from '../utils/config'
 import { useState } from 'react'
 import { Modal, ModalBody, ModalHeader } from '../../../utils/components/ui/modal'
 import { Button } from '../../../utils/components/ui/button'
 import { Col, Row } from '../../../utils/components/ui/grid'
+import { useContetField, ContentFieldProvider } from '../utils/context/ContentFieldContext'
 import { useNavigation } from '../../../utils/hooks/useNavigation'
 
-export const Index = () => {
-    const { model_id, getBreads, loading } = useContetField()
+const Content = () => {
+    const { model_id, getBreads, repalcePath } = useContetField()
     const breads = getBreads([{ name: config.name }])
     const [showModal, setShowModal] = useState(false)
     const { navigateTo } = useNavigation()
@@ -21,20 +20,17 @@ export const Index = () => {
 
     return (
         <>
-            {loading && <Spinner />}
-            {!loading && (
-                <ResourceIndex
-                    options={{
-                        breads,
-                        config,
-                        columns,
-                        baseParams: { model_id },
-                        customNewAction: () => {
-                            setShowModal(true)
-                        },
-                    }}
-                />
-            )}
+            <ResourceIndex
+                options={{
+                    breads,
+                    config,
+                    columns,
+                    baseParams: { model_id },
+                    customNewAction: () => {
+                        setShowModal(true)
+                    },
+                }}
+            />
             <Modal show={showModal} onClose={() => setShowModal(false)}>
                 <ModalHeader>フィールド追加</ModalHeader>
                 <ModalBody>
@@ -47,10 +43,9 @@ export const Index = () => {
                                         outline
                                         className="w-full h-20 text-1xl"
                                         onClick={() => {
-                                            navigateTo(
-                                                `${config.path.replace(':model_id', model_id)}/new`,
-                                                { field_type: field.value }
-                                            )
+                                            navigateTo(`${repalcePath(config.path)}/new`, {
+                                                field_type: field.value,
+                                            })
                                         }}
                                     >
                                         {field.icon && (
@@ -66,6 +61,16 @@ export const Index = () => {
                     </Row>
                 </ModalBody>
             </Modal>
+        </>
+    )
+}
+
+export const Index = () => {
+    return (
+        <>
+            <ContentFieldProvider>
+                <Content />
+            </ContentFieldProvider>
         </>
     )
 }

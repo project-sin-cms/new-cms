@@ -14,7 +14,8 @@ const Content = () => {
     const { navigateTo } = useNavigation()
 
     const columns = [
-        { key: 'title', label: '名前' },
+        { key: 'name', label: '名前' },
+        { key: 'field_type', label: 'フィールドタイプ' },
         { key: 'actions', label: '', _props: { style: { width: '10%' } } },
     ]
 
@@ -23,11 +24,20 @@ const Content = () => {
             <ResourceIndex
                 options={{
                     breads,
-                    config,
+                    config: (() => {
+                        let clone = { ...config }
+                        clone.path = repalcePath(clone.path)
+                        return clone
+                    })(),
                     columns,
-                    baseParams: { model_id },
+                    baseParams: { criteria: { model_id: model_id } },
                     customNewAction: () => {
                         setShowModal(true)
+                    },
+                    customEditAction: (item) => {
+                        navigateTo(`${repalcePath(config.path)}/edit/${item.id}`, {
+                            field_type: item.field_type,
+                        })
                     },
                 }}
             />

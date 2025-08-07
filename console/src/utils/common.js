@@ -1,4 +1,10 @@
+import qs from 'qs'
+
 export const getUrlParams = (params = {}) => {
-    const urlSearchParam = new URLSearchParams(params)
-    return urlSearchParam.toString()
+    return qs.stringify(params)
+}
+
+export const getChoice = (choices = [], value) => {
+    let choice = choices.find((item) => item.value === value)
+    return choice
 }

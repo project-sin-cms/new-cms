@@ -1,3 +1,33 @@
+const allowedCols = {
+    1: 'grid-cols-1',
+    2: 'grid-cols-2',
+    3: 'grid-cols-3',
+    4: 'grid-cols-4',
+    5: 'grid-cols-5',
+    6: 'grid-cols-6',
+    7: 'grid-cols-7',
+    8: 'grid-cols-8',
+    9: 'grid-cols-9',
+    10: 'grid-cols-10',
+    11: 'grid-cols-11',
+    12: 'grid-cols-12',
+}
+
+const allowedCol = {
+    1: 'col-span-1',
+    2: 'col-span-2',
+    3: 'col-span-3',
+    4: 'col-span-4',
+    5: 'col-span-5',
+    6: 'col-span-6',
+    7: 'col-span-7',
+    8: 'col-span-8',
+    9: 'col-span-9',
+    10: 'col-span-10',
+    11: 'col-span-11',
+    12: 'col-span-12',
+}
+
 /**
  * Row component that renders a CSS grid container with a given number of columns.
  *
@@ -9,8 +39,10 @@
  * @returns {JSX.Element}
  */
 export const Row = ({ className = '', cols = 12, key = null, children }) => {
+    let colsClass = allowedCols[cols] || 'grid-cols-12'
+    console.log(colsClass)
     return (
-        <div className={`grid grid-cols-${cols} ${className}`} key={key}>
+        <div className={`grid ${colsClass} ${className}`} key={key}>
             {children}
         </div>
     )
@@ -27,8 +59,9 @@ export const Row = ({ className = '', cols = 12, key = null, children }) => {
  * @returns {JSX.Element}
  */
 export const Col = ({ col = null, className = '', key = null, children }) => {
+    let colClass = allowedCol[col] || 'col-span-12'
     return (
-        <div class={`${col ? 'col-span-' + col : ''} ${className}`} key={key}>
+        <div class={`${colClass} ${className}`} key={key}>
             {children}
         </div>
     )

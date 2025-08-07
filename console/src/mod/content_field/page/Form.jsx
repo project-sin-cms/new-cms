@@ -1,13 +1,14 @@
 import { useLocation, useParams } from 'react-router'
-import { config } from '../utils/config'
+import { config, fieldItem } from '../utils/config'
 import { ResourceForm } from '../../../utils/components/common/ResourceForm'
 import { useContetField, ContentFieldProvider } from '../utils/context/ContentFieldContext'
 import { useNavigation } from '../../../utils/hooks/useNavigation'
 import { useRef } from 'react'
+import { getChoice } from '../../../utils/common'
 
 const Contents = () => {
     const { id } = useParams()
-    const { getBreads, repalcePath } = useContetField()
+    const { getBreads, repalcePath, model_id } = useContetField()
     const { navigateTo } = useNavigation()
     const formRef = useRef(null)
 
@@ -25,14 +26,39 @@ const Contents = () => {
         navigateTo(repalcePath(config.path))
     }
 
-    const baseFormItem = [
+    const formItem = [
+        { title: '', id: 'model_id', default: model_id, formType: 'hidden' },
+        {
+            title: 'フィールドタイプ',
+            id: 'field_type',
+            default: fieldType,
+            formType: 'label',
+            label: (() => {
+                let choice = getChoice(fieldItem, fieldType)
+                return choice ? choice.label : ''
+            })(),
+        },
         { title: '名前', id: 'name', required: true },
-        { title: 'フィールドID', id: 'feild_id', required: true },
+        { title: 'フィールドID', id: 'field_id', required: true },
         { title: '必須項目', id: 'is_required', formType: 'switch' },
         { title: '一覧見出し', id: 'is_list_heading', formType: 'switch' },
     ]
 
-    return <ResourceForm options={{ breads, config, formItem: baseFormItem, id }} ref={formRef} />
+    return (
+        <ResourceForm
+            options={{
+                breads,
+                config: (() => {
+                    let clone = { ...config }
+                    clone.path = repalcePath(config.path)
+                    return clone
+                })(),
+                formItem,
+                id,
+            }}
+            ref={formRef}
+        />
+    )
 }
 
 export const New = () => {

@@ -214,6 +214,10 @@ export const Switch = ({ defaultValue = false, ...props }) => {
     return <FToggleSwitch checked={defaultValue} {...props} />
 }
 
+export const FormLabel = ({ label, ...props }) => {
+    return <FLabel>{label}</FLabel>
+}
+
 /**
  * FormBuilder component dynamically renders form input components based on formType.
  * Supports 'text' (TextInput), 'textarea' (Textarea), 'select' (Select), and 'switch' (Switch).
@@ -228,6 +232,8 @@ export const FormBuilder = ({ formType = 'text', ...props }) => {
             return <Select {...props} />
         case 'switch':
             return <Switch {...props} />
+        case 'label':
+            return <FormLabel {...props} />
         default:
             return <TextInput {...props} />
     }

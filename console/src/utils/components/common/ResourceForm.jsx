@@ -28,7 +28,7 @@ export const ResourceForm = forwardRef(({ options }, ref) => {
     const [inputs, setInputs] = useState(() => {
         const result = {}
         formItem.forEach((item) => {
-            result[item.id] = ''
+            result[item.id] = item?.default ?? ''
         })
         return result
     })
@@ -96,6 +96,9 @@ export const ResourceForm = forwardRef(({ options }, ref) => {
                             )}
                             {formItem.map((item, index) => {
                                 const { title, required = false, ...rest } = item
+                                if (item.formType === 'hidden') {
+                                    return <></>
+                                }
                                 const formId = rest.id
                                 return (
                                     <FormGroup key={index}>

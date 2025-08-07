@@ -14,7 +14,11 @@ return new class extends Migration
         Schema::create('cms_{{name_lower}}', function (Blueprint $table) {
             $table->id();
             $table->longText('title')->nullable();
+            $table->schedule();
+            $table->sortable();
+            $table->statusable();
             $table->timestamps();
+            $table->authoredBy();
         });
     }
 

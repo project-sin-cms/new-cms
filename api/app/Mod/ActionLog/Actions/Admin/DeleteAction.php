@@ -26,7 +26,7 @@ class DeleteAction extends BaseAction
             'success' => true,
             'timestamp' => now()->timestamp,
             'payload' => [
-                'data' => $this->domain->delete($id)
+                'data' => $this->domain->delete($request, $id)
             ]
         ];
     }

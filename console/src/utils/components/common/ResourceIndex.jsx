@@ -43,6 +43,8 @@ import { Select } from '../ui/form'
  * @param {Object} [props.options.addScopedColumns={}] テーブルに追加する独自カラム定義
  * @param {Array} [props.options.addDropdownItems=[]] 各行のアクションに追加するドロップダウン項目
  * @param {Function|null} [props.options.customNewAction=null] 新規作成ボタンのカスタム処理関数
+ * @param {Function|null} [props.options.customEditAction=null] 編集ボタンのカスタム処理関数
+ * @param {Function|null} [props.options.customDeleteAction=null] 削除ボタンのカスタム処理関数
  * @param {Object} [props.options.baseParams={}] 一覧取得APIに付与する追加クエリパラメータ
  */
 export const ResourceIndex = ({ options }) => {
@@ -56,6 +58,8 @@ export const ResourceIndex = ({ options }) => {
         addScopedColumns = {},
         addDropdownItems = [],
         customNewAction = null,
+        customEditAction = null,
+        customDeleteAction = null,
         baseParams = {},
     } = options
 
@@ -151,7 +155,13 @@ export const ResourceIndex = ({ options }) => {
                         >
                             {isEdit && (
                                 <DropdownItem
-                                    onClick={() => navigateTo(`${config.path}/edit/${item.id}`)}
+                                    onClick={() => {
+                                        if (customEditAction) {
+                                            customEditAction(item, row, idx)
+                                        } else {
+                                            navigateTo(`${config.path}/edit/${item.id}`)
+                                        }
+                                    }}
                                     icon={HiOutlinePencilAlt}
                                 >
                                     編集
@@ -160,8 +170,12 @@ export const ResourceIndex = ({ options }) => {
                             {isDelete && (
                                 <DropdownItem
                                     onClick={() => {
-                                        setDeleteId(item.id)
-                                        setShowModal(true)
+                                        if (customDeleteAction) {
+                                            customDeleteAction(item, row, idx)
+                                        } else {
+                                            setDeleteId(item.id)
+                                            setShowModal(true)
+                                        }
                                     }}
                                     icon={HiOutlineXCircle}
                                     className="text-red-800"

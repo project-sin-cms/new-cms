@@ -4,7 +4,11 @@ import { Link, useLocation } from 'react-router'
 import { ChevronDownIcon, GridIcon, ListIcon, PencilIcon } from '../../icons'
 import { useSidebar } from '../../context/SidebarContext'
 
-const navItems = [
+import { useAxios } from '../../hooks/useAxios'
+import { config } from '../../../mod/content_model/utils/config'
+
+let navItems = []
+const baseNav = [
     {
         icon: <GridIcon />,
         name: 'Dashboard',
@@ -15,11 +19,6 @@ const navItems = [
         icon: <ListIcon />,
         path: '/content/model',
         // subItems: [{ name: 'model', path: '/content_model', pro: false }],
-    },
-    {
-        name: '新着情報',
-        icon: <PencilIcon />,
-        path: '/content',
     },
     {
         name: 'Action Log',
@@ -35,6 +34,9 @@ export const AppSidebar = () => {
     const [openSubmenu, setOpenSubmenu] = useState(null)
     const [subMenuHeight, setSubMenuHeight] = useState({})
     const subMenuRefs = useRef({})
+
+    const { loading, sendRequest, data } = useAxios()
+    const initRef = useRef(false)
 
     // const isActive = (path: string) => location.pathname === path;
     const isActive = useCallback((path) => location.pathname === path, [location.pathname])
@@ -74,6 +76,30 @@ export const AppSidebar = () => {
             }
         }
     }, [openSubmenu])
+
+    // 左メニュー取得
+    useEffect(() => {
+        if (!initRef.current) {
+            ;(async () => {
+                const response = await sendRequest({
+                    method: 'get',
+                    url: `${config.end_point}/resource`,
+                })
+                let clone = [...baseNav]
+                if (response?.data) {
+                    response.data.payload.data.map((menu, idx) => {
+                        clone.splice(2 + idx, 0, {
+                            name: menu.title,
+                            icon: <PencilIcon />,
+                            path: '/' + menu.alias,
+                        })
+                    })
+                }
+                navItems = clone
+            })()
+            initRef.current = true
+        }
+    }, [])
 
     const handleSubmenuToggle = (index, menuType) => {
         setOpenSubmenu((prevOpenSubmenu) => {

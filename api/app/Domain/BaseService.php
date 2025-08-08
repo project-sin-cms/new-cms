@@ -33,6 +33,18 @@ class BaseService
         ];
     }
 
+    public function findAll(Request $request): array
+    {
+        $posts = $this->model::where(function ($query) use ($request) {
+            $criteria = $request->get('criteria', []);
+            $this->appendCriteria($criteria, $query);
+        })->get();
+
+        return [
+            'data' => $posts
+        ];
+    }
+
     public function findDetail(Request $request, ?int $id): mixed
     {
         $post = $this->model::where(function($query) use ($request) {

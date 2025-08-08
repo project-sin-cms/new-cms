@@ -6,6 +6,8 @@ Route::prefix('api')->name('api.')->group(function () {
         Route::prefix('{{name_lower}}')->name('{{name_lower}}.')->group(function () {
             Route::get('/', [App\Mod\{{name}}\Actions\Admin\ListAction::class, '__invoke'])->name('list');
             Route::post('/store', [App\Mod\{{name}}\Actions\Admin\StoreAction::class, '__invoke'])->name('store');
+            Route::get('/resource', [App\Mod\{{name}}\Actions\Admin\ResourceAction::class, '__invoke'])->name('resource');
+            Route::get('/find', [App\Mod\{{name}}\Actions\Admin\FindAction::class, '__invoke'])->name('find');
             Route::get('/{id}', [App\Mod\{{name}}\Actions\Admin\DetailAction::class, '__invoke'])->name('detail');
             Route::put('/{id}', [App\Mod\{{name}}\Actions\Admin\UpdateAction::class, '__invoke'])->name('update');
             Route::delete('/{id}', [App\Mod\{{name}}\Actions\Admin\DeleteAction::class, '__invoke'])->name('delete');

@@ -15,14 +15,14 @@ class BaseService
         $this->model = $model;
     }
 
-    public function findList(Request $request, ?int $limit = 10): array
+    public function findList(Request $request, ?int $limit = 10, array $with = []): array
     {
         $current = (int)$request->query->get('current', 1);
         $limit = (int)$request->query->get('limit', $limit);
         $posts = $this->model::where(function ($query) use ($request) {
             $criteria = $request->get('criteria', []);
             $this->appendCriteria($criteria, $query);
-        })->paginate($limit, ['*'], 'page', $current);
+        })->with($with)->paginate($limit, ['*'], 'page', $current);
 
         return [
             'total' => $posts->total(),
@@ -33,24 +33,32 @@ class BaseService
         ];
     }
 
-    public function findAll(Request $request): array
+    public function findAll(Request $request, array $with = []): array
     {
         $posts = $this->model::where(function ($query) use ($request) {
             $criteria = $request->get('criteria', []);
             $this->appendCriteria($criteria, $query);
-        })->get();
+        })->with($with)->get();
 
-        return [
-            'data' => $posts
-        ];
+        return ['data' => $posts];
     }
 
-    public function findDetail(Request $request, ?int $id): mixed
+    public function findDetail(Request $request, ?int $id, array $with = []): mixed
     {
         $post = $this->model::where(function($query) use ($request) {
             $criteria = $request->get('criteria', []);
             $this->appendCriteria($criteria, $query);
-        })->findOrFail($id);
+        })->with($with)->findOrFail($id);
+        return $post;
+    }
+
+    public function findOneBy(Request $request, array $with = []): mixed
+    {
+        $post = $this->model::where(function ($query) use ($request) {
+            $criteria = $request->get('criteria', []);
+            $this->appendCriteria($criteria, $query);
+        })->with($with)->first();
+
         return $post;
     }
 

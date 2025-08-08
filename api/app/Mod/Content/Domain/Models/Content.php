@@ -1,0 +1,28 @@
+<?php
+namespace App\Mod\Content\Domain\Models;
+
+use App\Domain\Models\BaseModel;
+use App\Mod\ContentModel\Domain\Models\ContentModel;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+/**
+ * @property int $id
+ * @property string $title
+ * @property string $body
+ */
+class Content extends BaseModel
+{
+    protected $table = "cms_content";
+    protected $fillable = ['title'];
+
+    public function model(): BelongsTo
+    {
+        return $this->belongsTo(ContentModel::class, 'model_id');
+    }
+
+    public function values(): HasMany
+    {
+        return $this->hasMany(ContentValue::class, 'content_id');
+    }
+}

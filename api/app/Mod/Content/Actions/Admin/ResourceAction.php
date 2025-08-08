@@ -16,6 +16,7 @@ class ResourceAction extends BaseAction
     public function __construct(Domain $domain, Responder $responder)
     {
         parent::__construct($domain, $responder);
+        $this->domain->setIsFlat(true);
     }
 
     protected function callback(Request $request): array

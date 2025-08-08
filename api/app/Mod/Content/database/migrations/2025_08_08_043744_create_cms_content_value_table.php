@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('content_id')->nullable();
             $table->foreignId('field_id')->nullable();
-            $table->longText('value');
+            $table->longText('value')->nullable();
             $table->schedule();
             $table->sortable();
             $table->statusable();

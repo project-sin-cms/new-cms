@@ -25,4 +25,14 @@ class Content extends BaseModel
     {
         return $this->hasMany(ContentValue::class, 'content_id');
     }
+
+    public function toFlatArray(): array
+    {
+        $flat = $this->toArray();
+        foreach ($this->values as $value) {
+            $flat[$value->field->field_id] = $value->value;
+        }
+        unset($flat['values']); // values自体はいらなければ削除
+        return $flat;
+    }
 }

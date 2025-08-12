@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigation } from '../../hooks/useNavigation'
 import { useLocation, useNavigate } from 'react-router'
 import { useAxios } from '../../hooks/useAxios'
@@ -45,6 +45,7 @@ import { Select } from '../ui/form'
  * @param {Function|null} [props.options.customNewAction=null] 新規作成ボタンのカスタム処理関数
  * @param {Function|null} [props.options.customEditAction=null] 編集ボタンのカスタム処理関数
  * @param {Function|null} [props.options.customDeleteAction=null] 削除ボタンのカスタム処理関数
+ * @param {Array} [props.options.addPageActionButtons=[]] ページの追加ボタン項目
  * @param {Object} [props.options.baseParams={}] 一覧取得APIに付与する追加クエリパラメータ
  */
 export const ResourceIndex = ({ options }) => {
@@ -61,6 +62,7 @@ export const ResourceIndex = ({ options }) => {
         customEditAction = null,
         customDeleteAction = null,
         baseParams = {},
+        addPageActionButtons = [],
     } = options
 
     const { navigateTo } = useNavigation()
@@ -183,18 +185,20 @@ export const ResourceIndex = ({ options }) => {
                                     削除
                                 </DropdownItem>
                             )}
-                            {addDropdownItems.map((dropdown, index) => {
-                                const { name, onClick = () => {}, ...rest } = dropdown
-                                return (
-                                    <DropdownItem
-                                        key={index}
-                                        onClick={() => onClick(item, row)}
-                                        {...rest}
-                                    >
-                                        {name}
-                                    </DropdownItem>
-                                )
-                            })}
+                            {React.Children.toArray(
+                                addDropdownItems.map((dropdown, index) => {
+                                    const { name, onClick = () => {}, ...rest } = dropdown
+                                    return (
+                                        <DropdownItem
+                                            key={index}
+                                            onClick={() => onClick(item, row)}
+                                            {...rest}
+                                        >
+                                            {name}
+                                        </DropdownItem>
+                                    )
+                                })
+                            )}
                         </Dropdown>
                     </div>
                 </td>
@@ -249,6 +253,15 @@ export const ResourceIndex = ({ options }) => {
                                         <HiOutlinePlusCircle className="me-1" />
                                         追加
                                     </Button>
+                                )}
+                                {React.Children.toArray(
+                                    addPageActionButtons.map((AddButton) => {
+                                        return (
+                                            <>
+                                                <AddButton />
+                                            </>
+                                        )
+                                    })
                                 )}
                             </ButtonGroup>
                         </div>

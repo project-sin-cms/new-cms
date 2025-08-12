@@ -1,16 +1,17 @@
 <?php
-namespace App\Mod\Content\Actions\Admin;
+
+namespace App\Mod\Content\Actions\Admin\Category;
 
 use App\Http\Actions\BaseAction;
-use App\Mod\Content\Domain\ContentService as Domain;
-use App\Mod\Content\Responder\Admin\ListResponder as Responder;
+use App\Mod\Content\Domain\ContentCategoryService as Domain;
+use App\Mod\Content\Responder\Admin\Category\FindResponder as Responder;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @property Domain $domain
  * @property Responder $responder
  */
-class ListAction extends BaseAction
+class FindAction extends BaseAction
 {
 
     public function __construct(Domain $domain, Responder $responder)
@@ -21,10 +22,13 @@ class ListAction extends BaseAction
 
     protected function callback(Request $request): array
     {
+        $id = $request->route('id');
         return [
             'success' => true,
             'timestamp' => now()->timestamp,
-            'payload' => $this->domain->findList($request, null, ['values', 'categories'])
+            'payload' => [
+                'data' => $this->domain->findOneBy($request)
+            ]
         ];
     }
 }

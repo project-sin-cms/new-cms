@@ -7,6 +7,10 @@ import {
     Checkbox as FCheckbox,
     ToggleSwitch as FToggleSwitch,
 } from 'flowbite-react'
+import { RSelect } from './ReactSelect'
+import React, { useEffect, useState } from 'react'
+import { useAxios } from '../../../hooks/useAxios'
+import { Spinner } from '../spinner'
 
 /**
  * Form component wrapping an HTML form element.
@@ -96,7 +100,7 @@ export const Textarea = ({ onChange = () => {}, ...props }) => {
  * @param {boolean} [props.required] - Whether the field is required.
  * @returns {JSX.Element}
  */
-export const Select = ({ onChange = () => {}, items, ...props }) => {
+export const Select = ({ placeholder = null, onChange = () => {}, items, ...props }) => {
     return (
         <FSelect
             {...props}
@@ -104,6 +108,7 @@ export const Select = ({ onChange = () => {}, items, ...props }) => {
                 onChange(e.target.value, e)
             }}
         >
+            {placeholder && <option>{placeholder}</option>}
             {items.map((item) => (
                 <option
                     key={item.value}
@@ -214,8 +219,60 @@ export const Switch = ({ defaultValue = false, ...props }) => {
     return <FToggleSwitch checked={defaultValue} {...props} />
 }
 
+/**
+ * FormLabel component wrapping flowbite-react's Label to display a simple label.
+ * @param {object} props - Props passed to FLabel.
+ * @param {string} props.label - The text content of the label.
+ * @returns {JSX.Element}
+ */
 export const FormLabel = ({ label, ...props }) => {
     return <FLabel>{label}</FLabel>
+}
+
+/**
+ * TaxonomySelect component fetches options from an API endpoint and renders a react-select dropdown.
+ *
+ * @param {object} props - Props passed to the component.
+ * @param {string} props.endpoint - API endpoint URL to fetch options from.
+ * @param {string} [props.keyLabel='title'] - Object key to use for option labels.
+ * @param {string} [props.keyValue='id'] - Object key to use for option values.
+ * @returns {JSX.Element} A spinner while loading and a react-select dropdown after data is loaded.
+ */
+export const TaxonomySelect = ({
+    defaultValue = [],
+    endpoint,
+    keyLabel = 'title',
+    keyValue = 'id',
+    ...props
+}) => {
+    const { data, sendRequest } = useAxios()
+    const [loading, setLoading] = useState(true)
+    const [options, setOptions] = useState([])
+
+    useEffect(() => {
+        if (endpoint) {
+            sendRequest({ url: endpoint, method: 'GET' })
+        }
+    }, [endpoint])
+
+    useEffect(() => {
+        if (data && Array.isArray(data?.payload.data)) {
+            setOptions(
+                data.payload.data.map((item) => ({
+                    label: item[keyLabel],
+                    value: item[keyValue],
+                }))
+            )
+            setLoading(false)
+        }
+    }, [data])
+
+    return (
+        <>
+            {loading && <Spinner />}
+            {!loading && <RSelect value={defaultValue} options={options} {...props} />}
+        </>
+    )
 }
 
 /**
@@ -234,6 +291,8 @@ export const FormBuilder = ({ formType = 'text', ...props }) => {
             return <Switch {...props} />
         case 'label':
             return <FormLabel {...props} />
+        case 'taxonomy_select':
+            return <TaxonomySelect {...props} />
         default:
             return <TextInput {...props} />
     }

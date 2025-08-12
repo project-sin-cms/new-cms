@@ -4,12 +4,11 @@ namespace App\Mod\Content\Domain\Models;
 use App\Domain\Models\BaseModel;
 use App\Mod\ContentModel\Domain\Models\ContentModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
- * @property string $title
- * @property string $body
  */
 class Content extends BaseModel
 {
@@ -24,6 +23,11 @@ class Content extends BaseModel
     public function values(): HasMany
     {
         return $this->hasMany(ContentValue::class, 'content_id');
+    }
+    
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(ContentCategory::class, 'cms_content_to_categories', 'content_id', 'category_id');
     }
 
     public function toFlatArray(): array

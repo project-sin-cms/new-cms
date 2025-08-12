@@ -1,35 +1,20 @@
 <?php
 namespace App\Mod\Content\Domain;
 
-use App\Domain\BaseService;
 use Symfony\Component\HttpFoundation\Request;
 use App\Mod\Content\Domain\Models\Content;
 use App\Mod\ContentModel\Domain\Models\ContentModel;
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @property Content $model
  * @property ContentModel $contentModel 
  */
-class ContentService extends BaseService
+class ContentService extends AbstractService
 {
-    protected $contentModel;
-
     public function __construct(Content $model)
     {
         parent::__construct($model);
-        
-        // Content Modelの取得
-        $route = Route::current();
-        $modelName = $route->parameter('model_name');
-        if (!$modelName) {
-            abort(404);
-        }
-        $contentModel = ContentModel::where('alias', $modelName)->first();
-        if (!$contentModel) {
-            abort(404);
-        }
-        $this->contentModel = $contentModel;
     }
 
     public function findList(Request $request, ?int $limit = null, array $with = []): array
@@ -47,11 +32,13 @@ class ContentService extends BaseService
             unset($inputs[$field['field_id']]);
         }
 
-        // model idの追加
-        $inputs['model_id'] = $this->contentModel->id;
+        // categoriesも一旦破棄
+        unset($inputs['categories']);
+
+        parent::beforeSave($request, $post, $inputs);
     }
 
-    protected function afterSave($request, $post): void
+    protected function afterSave($request, Content $post): void
     {
         // Content Valueの保存
         foreach ($this->contentModel->fields as $key => $field) {
@@ -65,13 +52,52 @@ class ContentService extends BaseService
                 $values
             );
         }
-    }
 
-    protected function appendCriteria($criteria = [], $query): void
-    {
-        // デフォルトでmodelでフィルター
-        $query->where('model_id', $this->contentModel->id);
-        parent::appendCriteria($criteria, $query);
+        // カテゴリの保存処理
+        $categoris = $request->input('categories', null);
+        if ($categoris) {
+            if (isset($categoris[0])) {
+                // 複数選択の場合
+                $categoryId = [];
+                foreach ($categoris as $category) {
+                    // 新規カテゴリ（label, value以外のプロパティがあればそれも含む）を検出し、存在しない場合はカテゴリを作成して紐付ける
+                    $categoryId = [];
+                    foreach ($categoris as $category) {
+                        // valueが数値でなければ新規カテゴリとみなす
+                        if (!is_numeric($category['value'])) {
+                            // 新規カテゴリ作成
+                            $newCategory = $post->categories()->getRelated()->create([
+                                'title' => $category['label'],
+                                'model_id' => $this->contentModel->id
+                            ]);
+                            $categoryId[] = $newCategory->id;
+                        } else {
+                            $categoryId[] = $category['value'];
+                        }
+                    }
+                }
+                $post->categories()->sync($categoryId);
+            } else {
+                // 単一選択の場合
+                // valueが数値でなければ新規カテゴリとみなす
+                if (!is_numeric($categoris['value'])) {
+                    // 新規カテゴリ作成
+                    Log::info($this->contentModel->id);
+                    $newCategory = $post->categories()->getRelated()->create([
+                        'title' => $categoris['label'],
+                        'model_id' => $this->contentModel->id
+                    ]);
+                    $categoryId = [$newCategory->id];
+                } else {
+                    $categoryId = [$categoris['value']];
+                }
+                $post->categories()->sync($categoryId);
+            }
+            
+        } else {
+            // カテゴリ未選択の場合は関連を解除
+            $post->categories()->detach();
+        }
     }
 
     protected function validateRequest(Request $request, mixed $post = null): void

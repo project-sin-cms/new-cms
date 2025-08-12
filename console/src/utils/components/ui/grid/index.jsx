@@ -40,7 +40,6 @@ const allowedCol = {
  */
 export const Row = ({ className = '', cols = 12, key = null, children }) => {
     let colsClass = allowedCols[cols] || 'grid-cols-12'
-    console.log(colsClass)
     return (
         <div className={`grid ${colsClass} ${className}`} key={key}>
             {children}
@@ -61,7 +60,7 @@ export const Row = ({ className = '', cols = 12, key = null, children }) => {
 export const Col = ({ col = null, className = '', key = null, children }) => {
     let colClass = allowedCol[col] || 'col-span-12'
     return (
-        <div class={`${colClass} ${className}`} key={key}>
+        <div className={`${colClass} ${className}`} key={key}>
             {children}
         </div>
     )

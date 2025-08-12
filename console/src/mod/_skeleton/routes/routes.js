@@ -1,8 +1,7 @@
 import React from 'react'
 import { config } from '../utils/config'
 import { Index } from '../page/Index'
-import { New } from '../page/New'
-import { Edit } from '../page/Edit'
+import { New, Edit } from '../page/Form'
 
 export const routes = [
     {

@@ -8,10 +8,10 @@ import { ThemeProvider } from './utils/context/ThemeContext.jsx'
 import { AppWrapper } from './utils/components/common/PageMeta.jsx'
 
 async function enableMocking() {
-    if (import.meta.env.DEV) {
-        const { worker } = await import('./mocks/browser')
-        return worker.start()
-    }
+    // if (import.meta.env.DEV) {
+    //     const { worker } = await import('./mocks/browser')
+    //     return worker.start()
+    // }
 }
 
 enableMocking().then(() => {

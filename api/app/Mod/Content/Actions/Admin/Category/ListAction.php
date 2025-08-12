@@ -1,9 +1,9 @@
 <?php
-namespace App\Mod\Content\Actions\Admin;
+namespace App\Mod\Content\Actions\Admin\Category;
 
 use App\Http\Actions\BaseAction;
-use App\Mod\Content\Domain\ContentService as Domain;
-use App\Mod\Content\Responder\Admin\ListResponder as Responder;
+use App\Mod\Content\Domain\ContentCategoryService as Domain;
+use App\Mod\Content\Responder\Admin\Category\ListResponder as Responder;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -16,7 +16,6 @@ class ListAction extends BaseAction
     public function __construct(Domain $domain, Responder $responder)
     {
         parent::__construct($domain, $responder);
-        $this->domain->setIsFlat(true);
     }
 
     protected function callback(Request $request): array
@@ -24,7 +23,7 @@ class ListAction extends BaseAction
         return [
             'success' => true,
             'timestamp' => now()->timestamp,
-            'payload' => $this->domain->findList($request, null, ['values', 'categories'])
+            'payload' => $this->domain->findList($request)
         ];
     }
 }

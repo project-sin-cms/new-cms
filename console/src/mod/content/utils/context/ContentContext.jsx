@@ -54,6 +54,7 @@ export const ContentContextProvider = ({ children }) => {
             value={{
                 config,
                 modelData,
+                loading,
             }}
         >
             {loading && <Spinner />}

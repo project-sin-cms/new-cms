@@ -17,6 +17,20 @@ const Contents = () => {
         }
         formItem.push(item)
     })
+    if (modelData?.is_use_category) {
+        formItem.push({
+            title: 'カテゴリ',
+            id: 'categories',
+            formType: 'taxonomy_select',
+            placeholder: '選択してください',
+            endpoint: `content/${modelData.alias}/category/resource`,
+            isSearchable: true,
+            onFetch: (data) => {
+                return { label: data[0].title, value: data[0].id }
+            },
+            position: 'aside',
+        })
+    }
 
     return (
         <>

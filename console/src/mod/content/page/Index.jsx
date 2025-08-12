@@ -1,13 +1,19 @@
 import { useEffect, useState } from 'react'
 import { ResourceIndex } from '../../../utils/components/common/ResourceIndex'
 import { ContentContextProvider, useContent } from '../utils/context/ContentContext'
+import { Button } from '../../../utils/components/ui/button'
+import { HiOutlineArrowCircleRight } from 'react-icons/hi'
+import { useNavigation } from '../../../utils/hooks/useNavigation'
 
 const Contents = () => {
     const { config, modelData } = useContent()
     const breads = [{ name: config.name }]
     const [columns, setColumns] = useState([])
+    const { navigateTo } = useNavigation()
 
     useEffect(() => {
+        if (!modelData) return
+
         let newColumns = []
         modelData?.fields?.map((field, key) => {
             if (field.is_list_heading) {
@@ -16,17 +22,35 @@ const Contents = () => {
         })
         newColumns.push({ key: 'actions', label: '', _props: { style: { width: '10%' } } })
         setColumns(newColumns)
-    }, [])
+    }, [modelData])
 
     return (
         <>
-            <ResourceIndex
-                options={{
-                    breads,
-                    config,
-                    columns,
-                }}
-            />
+            {modelData && (
+                <ResourceIndex
+                    options={{
+                        breads,
+                        config,
+                        columns,
+                        addPageActionButtons: modelData.is_use_category
+                            ? [
+                                  () => {
+                                      return (
+                                          <Button
+                                              size="xs"
+                                              outline
+                                              onClick={() => navigateTo(config.path + '/category')}
+                                          >
+                                              <HiOutlineArrowCircleRight className="me-0.5" />
+                                              カテゴリ
+                                          </Button>
+                                      )
+                                  },
+                              ]
+                            : [],
+                    }}
+                />
+            )}
         </>
     )
 }

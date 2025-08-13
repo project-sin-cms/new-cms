@@ -11,6 +11,12 @@ import { RSelect } from './ReactSelect'
 import React, { useEffect, useState } from 'react'
 import { useAxios } from '../../../hooks/useAxios'
 import { Spinner } from '../spinner'
+import Flatpickr from 'react-flatpickr'
+import { Japanese } from 'flatpickr/dist/l10n/ja.js'
+import { twMerge } from 'tailwind-merge'
+
+const customInputClasses =
+    'block w-full border focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-50 border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-500 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 p-2.5 text-sm rounded-lg'
 
 /**
  * Form component wrapping an HTML form element.
@@ -276,6 +282,34 @@ export const TaxonomySelect = ({
 }
 
 /**
+ * DatePicker component using react-flatpickr.
+ *
+ * @param {object} props - Props passed to Flatpickr.
+ * @param {string|Date} [props.defaultValue] - The initial date value.
+ * @param {function(Date): void} [props.onChange] - Callback fired when the date changes.
+ * @returns {JSX.Element}
+ */
+export const DatePicker = ({ defaultValue, onChange = () => {}, className, ...props }) => {
+    const options = {
+        locale: Japanese,
+        dateFormat: 'Y-m-d',
+        ...props.options,
+    }
+
+    return (
+        <Flatpickr
+            value={defaultValue}
+            onChange={([date]) => {
+                onChange(date)
+            }}
+            options={options}
+            className={twMerge(customInputClasses, className)}
+            {...props}
+        />
+    )
+}
+
+/**
  * FormBuilder component dynamically renders form input components based on formType.
  * Supports 'text' (TextInput), 'textarea' (Textarea), 'select' (Select), and 'switch' (Switch).
  * @param {object} props - Props passed to the rendered component.
@@ -293,6 +327,8 @@ export const FormBuilder = ({ formType = 'text', ...props }) => {
             return <FormLabel {...props} />
         case 'taxonomy_select':
             return <TaxonomySelect {...props} />
+        case 'date':
+            return <DatePicker {...props} />
         default:
             return <TextInput {...props} />
     }

@@ -49,12 +49,23 @@ export const ContentContextProvider = ({ children }) => {
         })()
     }, [model_name])
 
+    // カテゴリ用コンフィグ取得
+    const getCateConfig = () => {
+        const cateConfig = { ...config }
+        cateConfig.parent_path = config.path
+        cateConfig.path = config.path + '/category'
+        cateConfig.end_point = config.end_point + '/category'
+
+        return cateConfig
+    }
+
     return (
         <ContentContext.Provider
             value={{
                 config,
                 modelData,
                 loading,
+                getCateConfig,
             }}
         >
             {loading && <Spinner />}

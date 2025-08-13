@@ -1,27 +1,45 @@
-import { useEffect, useRef } from 'react'
 import { useContent } from '../../utils/context/ContentContext'
 import { ResourceIndex } from '../../../../utils/components/common/ResourceIndex'
+import { useNavigation } from '../../../../utils/hooks/useNavigation'
+import { HiOutlineArrowCircleLeft } from 'react-icons/hi'
+import { Button } from '../../../../utils/components/ui/button'
 
 export const Index = () => {
-    const { config, modelData } = useContent()
-    const breads = [{ name: config.name, path: config.path }, { name: 'カテゴリ' }]
-    const initRef = useRef(false)
+    const { getCateConfig, modelData } = useContent()
+    const { navigateTo } = useNavigation()
+    const config = getCateConfig()
+    const breads = [{ name: config.name, path: config.parent_path }, { name: 'カテゴリ' }]
 
     const columns = [
         { key: 'title', label: 'タイトル' },
         { key: 'actions', label: '', _props: { style: { width: '10%' } } },
     ]
 
-    useEffect(() => {
-        if (!modelData || initRef.current) return
-
-        // config設定変更
-        config.end_point = config.end_point + '/category'
-        config.path = config.path + '/category'
-        initRef.current = true
-
-        return () => (initRef.current = false)
-    }, [modelData])
-
-    return <>{modelData && <ResourceIndex options={{ breads, config, columns }} />}</>
+    return (
+        <>
+            {modelData && (
+                <ResourceIndex
+                    options={{
+                        breads,
+                        config,
+                        columns,
+                        addPageActionButtons: [
+                            () => {
+                                return (
+                                    <Button
+                                        size="xs"
+                                        outline
+                                        onClick={() => navigateTo(config.parent_path)}
+                                    >
+                                        <HiOutlineArrowCircleLeft className="me-0.5" />
+                                        一覧に戻る
+                                    </Button>
+                                )
+                            },
+                        ],
+                    }}
+                />
+            )}
+        </>
+    )
 }

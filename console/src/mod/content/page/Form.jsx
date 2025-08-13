@@ -42,9 +42,7 @@ const Contents = () => {
 export const New = () => {
     return (
         <>
-            <ContentContextProvider>
-                <Contents />
-            </ContentContextProvider>
+            <Contents />
         </>
     )
 }
@@ -52,9 +50,7 @@ export const New = () => {
 export const Edit = () => {
     return (
         <>
-            <ContentContextProvider>
-                <Contents />
-            </ContentContextProvider>
+            <Contents />
         </>
     )
 }

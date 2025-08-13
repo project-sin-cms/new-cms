@@ -9,23 +9,29 @@ const formItem = [
     { title: 'カテゴリ', id: 'is_use_category', formType: 'switch', label: '使用する' },
 ]
 
-export const New = () => {
-    const breads = [{ name: config.name, path: config.path }, { name: '新規作成' }]
+const Contents = () => {
+    const { id } = useParams()
+    const breads = [{ name: config.name, path: config.path }, { name: id ? '編集' : '新規作成' }]
 
     return (
         <>
-            <ResourceForm options={{ breads, config, formItem }} />
+            <ResourceForm options={{ breads, config, formItem, id }} />
+        </>
+    )
+}
+
+export const New = () => {
+    return (
+        <>
+            <Contents />
         </>
     )
 }
 
 export const Edit = () => {
-    const breads = [{ name: config.name, path: config.path }, { name: '編集' }]
-    const { id } = useParams()
-
     return (
         <>
-            <ResourceForm options={{ breads, config, formItem, id }} />
+            <Contents />
         </>
     )
 }

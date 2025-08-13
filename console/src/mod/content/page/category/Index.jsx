@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react'
-import { ContentContextProvider, useContent } from '../../utils/context/ContentContext'
+import { useContent } from '../../utils/context/ContentContext'
 import { ResourceIndex } from '../../../../utils/components/common/ResourceIndex'
 
-const Contents = () => {
+export const Index = () => {
     const { config, modelData } = useContent()
     const breads = [{ name: config.name, path: config.path }, { name: 'カテゴリ' }]
     const initRef = useRef(false)
@@ -24,12 +24,4 @@ const Contents = () => {
     }, [modelData])
 
     return <>{modelData && <ResourceIndex options={{ breads, config, columns }} />}</>
-}
-
-export const Index = () => {
-    return (
-        <ContentContextProvider>
-            <Contents />
-        </ContentContextProvider>
-    )
 }

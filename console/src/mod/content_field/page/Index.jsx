@@ -7,7 +7,7 @@ import { Col, Row } from '../../../utils/components/ui/grid'
 import { useContetField, ContentFieldProvider } from '../utils/context/ContentFieldContext'
 import { useNavigation } from '../../../utils/hooks/useNavigation'
 
-const Content = () => {
+export const Index = () => {
     const { model_id, getBreads, repalcePath } = useContetField()
     const breads = getBreads([{ name: config.name }])
     const [showModal, setShowModal] = useState(false)
@@ -71,16 +71,6 @@ const Content = () => {
                     </Row>
                 </ModalBody>
             </Modal>
-        </>
-    )
-}
-
-export const Index = () => {
-    return (
-        <>
-            <ContentFieldProvider>
-                <Content />
-            </ContentFieldProvider>
         </>
     )
 }

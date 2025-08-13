@@ -133,7 +133,7 @@ export const ResourceForm = forwardRef(({ options }, ref) => {
                                     </Alert>
                                 )}
                                 <Row cols={12}>
-                                    <Col col={aSideFormItem ? 9 : 12}>
+                                    <Col col={aSideFormItem.length > 0 ? 9 : 12}>
                                         {mainFormItem?.map((item, index) => {
                                             const { title, required = false, ...rest } = item
                                             if (item.formType === 'hidden') {
@@ -164,7 +164,7 @@ export const ResourceForm = forwardRef(({ options }, ref) => {
                                             )
                                         })}
                                     </Col>
-                                    {aSideFormItem && (
+                                    {aSideFormItem.length > 0 && (
                                         <Col col={3} className="ms-4 ps-4 border-s">
                                             {aSideFormItem?.map((item, index) => {
                                                 const { title, required = false, ...rest } = item

@@ -12,11 +12,26 @@ function App() {
                 <ScrollToTop />
                 <Routes>
                     <Route element={<AppLayout />}>
-                        {menuRoutes.map((menuRoute, idx) => {
+                        {menuRoutes.map((route, idx) => {
+                            if (route.children) {
+                                return (
+                                    <Route element={<route.element />} key={idx}>
+                                        {route.children.map((childRoute, childIdx) => {
+                                            return (
+                                                <Route
+                                                    path={childRoute.path}
+                                                    element={<childRoute.element />}
+                                                    key={childIdx}
+                                                />
+                                            )
+                                        })}
+                                    </Route>
+                                )
+                            }
                             return (
                                 <Route
-                                    path={menuRoute.path}
-                                    element={<menuRoute.element />}
+                                    path={route.path}
+                                    element={<route.element />}
                                     key={idx}
                                 />
                             )

@@ -36,16 +36,16 @@ const Contents = () => {
 
 export const New = () => {
     return (
-        <ContentContextProvider>
+        <>
             <Contents />
-        </ContentContextProvider>
+        </>
     )
 }
 
 export const Edit = () => {
     return (
-        <ContentContextProvider>
+        <>
             <Contents />
-        </ContentContextProvider>
+        </>
     )
 }

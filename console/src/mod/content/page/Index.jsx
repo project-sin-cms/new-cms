@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { ResourceIndex } from '../../../utils/components/common/ResourceIndex'
-import { ContentContextProvider, useContent } from '../utils/context/ContentContext'
+import { useContent } from '../utils/context/ContentContext'
 import { Button } from '../../../utils/components/ui/button'
 import { HiOutlineArrowCircleRight } from 'react-icons/hi'
 import { useNavigation } from '../../../utils/hooks/useNavigation'
 
-const Contents = () => {
+export const Index = () => {
     const { config, modelData } = useContent()
     const breads = [{ name: config.name }]
     const [columns, setColumns] = useState([])
@@ -52,13 +52,5 @@ const Contents = () => {
                 />
             )}
         </>
-    )
-}
-
-export const Index = () => {
-    return (
-        <ContentContextProvider>
-            <Contents />
-        </ContentContextProvider>
     )
 }

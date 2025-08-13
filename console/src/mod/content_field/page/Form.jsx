@@ -64,9 +64,7 @@ const Contents = () => {
 export const New = () => {
     return (
         <>
-            <ContentFieldProvider>
-                <Contents />
-            </ContentFieldProvider>
+            <Contents />
         </>
     )
 }
@@ -74,9 +72,7 @@ export const New = () => {
 export const Edit = () => {
     return (
         <>
-            <ContentFieldProvider>
-                <Contents />
-            </ContentFieldProvider>
+            <Contents />
         </>
     )
 }

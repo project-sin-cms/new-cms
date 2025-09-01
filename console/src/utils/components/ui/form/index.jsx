@@ -14,6 +14,7 @@ import { Spinner } from '../spinner'
 import Flatpickr from 'react-flatpickr'
 import { Japanese } from 'flatpickr/dist/l10n/ja.js'
 import { twMerge } from 'tailwind-merge'
+import { ReactEditor } from './ReactEditor'
 
 const customInputClasses =
     'block w-full border focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-50 border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-500 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 p-2.5 text-sm rounded-lg'
@@ -309,6 +310,10 @@ export const DatePicker = ({ defaultValue, onChange = () => {}, className, ...pr
     )
 }
 
+export const RichText = ({ ...props }) => {
+    return <ReactEditor {...props} />
+}
+
 /**
  * FormBuilder component dynamically renders form input components based on formType.
  * Supports 'text' (TextInput), 'textarea' (Textarea), 'select' (Select), and 'switch' (Switch).
@@ -329,6 +334,8 @@ export const FormBuilder = ({ formType = 'text', ...props }) => {
             return <TaxonomySelect {...props} />
         case 'date':
             return <DatePicker {...props} />
+        case 'richtext':
+            return <RichText {...props} />
         default:
             return <TextInput {...props} />
     }

@@ -772,3 +772,29 @@ span.flatpickr-weekday,
 .simplebar-scrollbar.simplebar-visible:before {
     @apply opacity-100;
 }
+
+/* Editor.js: make content span full parent width */
+.codex-editor .ce-block__content,
+.codex-editor .ce-toolbar__content {
+    max-width: calc(100% - 3.8rem) !important; /* 左ツール分を残す */
+    margin: 0 0 0 auto;
+}
+
+/* Editor.js: 全幅化に合わせて左右の余白/ツール位置を調整 */
+.codex-editor {
+    width: 100%;
+}
+.codex-editor .ce-block__content {
+    padding-left: 0.8rem; /* 左ツール分の余白 */
+    padding-right: 0.5rem; /* px-2 */
+}
+.codex-editor .ce-toolbar__content {
+    padding-left: 0.8rem; /* 左ツール分の余白 */
+    padding-right: 0.5rem; /* px-2 */
+}
+.codex-editor .ce-toolbar__plus {
+    left: 0.5rem; /* px-2: 左端に合わせる */
+}
+.codex-editor .ce-toolbar__settings {
+    right: 0.5rem; /* px-2: 右端に合わせる */
+}

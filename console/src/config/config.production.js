@@ -1,4 +1,4 @@
 export default {
-    endpointUrl: 'https://abitestxsrv.xbiz.jp/new-abi-cms/api/public/api/admin/',
-    basename: '/new-abi-cms/console/dist/',
+    endpointUrl: 'https://abitestxsrv.xbiz.jp/new-cms/api/public/api/admin/',
+    basename: '/new-cms/console/dist/',
 }

@@ -2,6 +2,7 @@
 namespace App\Mod\{{name}}\Domain\Models;
 
 use App\Domain\Models\BaseModel;
+use App\Domain\Models\Traits\AuditObservable;
 
 /**
  * @property int $id
@@ -10,6 +11,8 @@ use App\Domain\Models\BaseModel;
  */
 class {{name}} extends BaseModel
 {
+    use AuditObservable;
+
     protected $table = "cms_{{name_lower}}";
     protected $fillable = ['title'];
 }

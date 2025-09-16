@@ -15,6 +15,11 @@ import Flatpickr from 'react-flatpickr'
 import { Japanese } from 'flatpickr/dist/l10n/ja.js'
 import { twMerge } from 'tailwind-merge'
 import { ReactEditor } from './ReactEditor'
+import { HiOutlineCalendar, HiOutlineXCircle } from 'react-icons/hi'
+import dayjs from 'dayjs'
+import 'dayjs/locale/ja'
+import { Button } from '../button'
+import { NumericFormat } from 'react-number-format'
 
 const customInputClasses =
     'block w-full border focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-50 border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-500 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 p-2.5 text-sm rounded-lg'
@@ -152,7 +157,7 @@ export const Radio = ({
         <div className={`${vertical ?? 'flex flex-col'} gap-4`}>
             {items.map((item, idx) => {
                 return (
-                    <div className={`flex item-center gap-2 ${!vertical ?? 'inline-flex'}`}>
+                    <div className={`flex item-center gap-2 ${!vertical ? 'inline-flex' : ''}`}>
                         <FRadio
                             id={`${name}_${item.value}`}
                             name={name}
@@ -194,7 +199,7 @@ export const Checkbox = ({
         <div className={`${vertical ?? 'flex flex-col'} gap-4`}>
             {items.map((item, idx) => {
                 return (
-                    <div className={`flex item-center gap-2 ${!vertical ?? 'inline-flex'}`}>
+                    <div className={`flex item-center gap-2 ${!vertical ? 'inline-flex' : ''}`}>
                         <FCheckbox
                             id={`${name}_${item.value}`}
                             name={name}
@@ -298,20 +303,47 @@ export const DatePicker = ({ defaultValue, onChange = () => {}, className, ...pr
     }
 
     return (
-        <Flatpickr
-            value={defaultValue}
-            onChange={([date]) => {
-                onChange(date)
-            }}
-            options={options}
-            className={twMerge(customInputClasses, className)}
-            {...props}
-        />
+        <>
+            <div className="relative w-full">
+                <Flatpickr
+                    value={defaultValue}
+                    onChange={([date]) => {
+                        const value = dayjs(date).format('YYYY-MM-DD')
+                        onChange(value, date)
+                    }}
+                    options={options}
+                    className={twMerge(customInputClasses, 'pr-10', className)}
+                    {...props}
+                />
+                {defaultValue ? (
+                    <HiOutlineXCircle
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer"
+                        onClick={() => onChange(null)}
+                    />
+                ) : (
+                    <HiOutlineCalendar className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                )}
+            </div>
+        </>
     )
 }
 
 export const RichText = ({ ...props }) => {
     return <ReactEditor {...props} />
+}
+
+export const NumberInput = ({ defaultValue, onChange = () => {}, className = '', ...props }) => {
+    return (
+        <NumericFormat
+            className={`block w-full border focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-50 border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-500 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 p-2.5 text-sm rounded-lg pr-10 flatpickr-input ${className}`}
+            value={defaultValue}
+            thousandSeparator={true}
+            onValueChange={(values, sourceInfo) => {
+                onChange(values.value, values, sourceInfo)
+            }}
+            {...props}
+        />
+    )
 }
 
 /**
@@ -336,6 +368,8 @@ export const FormBuilder = ({ formType = 'text', ...props }) => {
             return <DatePicker {...props} />
         case 'richtext':
             return <RichText {...props} />
+        case 'number':
+            return <NumberInput {...props} />
         default:
             return <TextInput {...props} />
     }

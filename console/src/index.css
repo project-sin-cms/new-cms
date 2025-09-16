@@ -3,6 +3,7 @@ layer(base);
 
 @import 'tailwindcss';
 @import './ReactSelect.css';
+
 @plugin 'flowbite-react/plugin/tailwindcss';
 @source '../.flowbite-react/class-list.json';
 
@@ -139,6 +140,20 @@ layer(base);
     --color-theme-pink-500: #ee46bc;
 
     --color-theme-purple-500: #7a5af8;
+
+    /* Primary color aliases for compatibility */
+    --color-primary-25: var(--color-brand-25);
+    --color-primary-50: var(--color-brand-50);
+    --color-primary-100: var(--color-brand-100);
+    --color-primary-200: var(--color-brand-200);
+    --color-primary-300: var(--color-brand-300);
+    --color-primary-400: var(--color-brand-400);
+    --color-primary-500: var(--color-brand-500);
+    --color-primary-600: var(--color-brand-600);
+    --color-primary-700: var(--color-brand-700);
+    --color-primary-800: var(--color-brand-800);
+    --color-primary-900: var(--color-brand-900);
+    --color-primary-950: var(--color-brand-950);
 
     --shadow-theme-md: 0px 4px 8px -2px rgba(16, 24, 40, 0.1),
         0px 2px 4px -2px rgba(16, 24, 40, 0.06);

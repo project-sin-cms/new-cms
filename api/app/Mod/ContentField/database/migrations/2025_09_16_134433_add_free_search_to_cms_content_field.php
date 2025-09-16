@@ -11,14 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cms_{{name_lower}}', function (Blueprint $table) {
-            $table->id();
-            $table->longText('title')->nullable();
-            $table->schedule();
-            $table->sortable();
-            $table->statusable();
-            $table->timestamps();
-            $table->authoredBy();
+        Schema::table('cms_content_field', function (Blueprint $table) {
+            //
             $table->searchable();
         });
     }
@@ -28,6 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cms_{{name_lower}}');
+        Schema::table('cms_content_field', function (Blueprint $table) {
+            //
+            $table->dropColumn('free_search');
+        });
     }
 };

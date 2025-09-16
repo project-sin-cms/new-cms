@@ -4,11 +4,12 @@ import { ScrollToTop } from './utils/components/common/ScrollToTop'
 import { NotFound } from './utils/pages/OtherPage/NotFound'
 import { routes as menuRoutes } from './routes/routes'
 import { Toaster } from 'sonner' // Toasterをインポート
+import config from './config/configLoader'
 
 function App() {
     return (
         <>
-            <Router>
+            <Router basename={config.basename}>
                 <ScrollToTop />
                 <Routes>
                     <Route element={<AppLayout />}>
@@ -28,13 +29,7 @@ function App() {
                                     </Route>
                                 )
                             }
-                            return (
-                                <Route
-                                    path={route.path}
-                                    element={<route.element />}
-                                    key={idx}
-                                />
-                            )
+                            return <Route path={route.path} element={<route.element />} key={idx} />
                         })}
                     </Route>
                     <Route path="*" element={<NotFound />} />

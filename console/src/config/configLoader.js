@@ -1,10 +1,10 @@
 import localConfig from './config.local'
 import productionConfig from './config.production'
 
-const hostname = window.location.hostname
+const env = import.meta.env.VITE_APP_ENV
 let config
 
-if (hostname === 'prod domain') {
+if (env === 'production') {
     config = productionConfig
 } else {
     config = localConfig

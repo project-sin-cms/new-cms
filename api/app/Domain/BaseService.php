@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * 
+ *
  */
 class BaseService
 {
@@ -26,10 +26,19 @@ class BaseService
     {
         $current = (int)$request->query->get('current', 1);
         $limit = (int)$request->query->get('limit', $limit);
+        $orderBy = $this->getOrderByFromRequest($request) ?? $this->model->orderBy();
+
         $posts = $this->model::where(function ($query) use ($request) {
             $criteria = $request->get('criteria', []);
             $this->appendCriteria($criteria, $query);
-        })->with($with)->paginate($limit, ['*'], 'page', $current);
+        })
+        ->when(!empty($orderBy), function ($query) use ($orderBy) {
+            foreach ($orderBy as $column => $direction) {
+                $query->orderBy($column, $direction);
+            }
+        })
+        ->with($with)
+        ->paginate($limit, ['*'], 'page', $current);
 
         return [
             'total' => $posts->total(),
@@ -79,22 +88,22 @@ class BaseService
             $post = $id ? $this->findDetail($request, $id) : new $modelName();
             $this->validateRequest($request, $post);
             $inputs = $request->request->all();
-    
+
             // 保存前処理
             if (method_exists($this, 'beforeSave')) {
                 $this->beforeSave($request, $post, $inputs);
             }
-    
+
             foreach ($inputs as $key => $val) {
                 $post->{$key} = $val;
             }
             $post->save();
-    
+
             // 保存後処理
             if (method_exists($this, 'afterSave')) {
                 $this->afterSave($request, $post);
             }
-    
+
             return $post;
         });
     }
@@ -110,11 +119,32 @@ class BaseService
         ];
     }
 
-    protected function appendCriteria($criteria = [], $query): void
+    protected function appendCriteria(?array $criteria = [], $query): void
     {
+        // フリー検索
+        if (!empty($criteria['freeword'])) {
+            // フリーワードをスペース（全角・半角）で分割し、AND条件でcontentsにLIKE検索をかける
+            $freewords = preg_split('/[\s　]+/u', $criteria['freeword'], -1, PREG_SPLIT_NO_EMPTY);
+            foreach ($freewords as $word) {
+                $query->where('free_search', 'like', '%' . $word . '%');
+            }
+        }
+        unset($criteria['freeword']);
+
         foreach ($criteria as $key => $value) {
             $query->where($key, $value);
         }
+    }
+
+    protected function getOrderByFromRequest(Request $request): ?array
+    {
+        $sort = $request->query->get('sort', null);
+        $direction = $request->query->get('direction', null);
+        if (!$sort || !$direction) {
+            return null;
+        }
+
+        return [$sort => $direction];
     }
 
     protected function validateRequest(Request $request, mixed $post = null): void

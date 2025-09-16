@@ -2,11 +2,11 @@ import React from 'react'
 import { config } from '../utils/config'
 import { Index } from '../page/Index'
 import { New, Edit } from '../page/Form'
-import { SkeletonLayout } from '../utils/components/SkeletonLayout'
+import { ModPageLayout } from '../utils/components/ModPageLayout'
 
 export const routes = [
     {
-        element: SkeletonLayout,
+        element: ModPageLayout,
         children: [
             {
                 name: config.name,

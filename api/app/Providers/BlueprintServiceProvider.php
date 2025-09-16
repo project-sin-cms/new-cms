@@ -31,7 +31,7 @@ class BlueprintServiceProvider extends ServiceProvider
             $this->dateTime('publish_at')->nullable();
             $this->dateTime('expires_at')->nullable();
         });
-        
+
         // 並び順
         Blueprint::macro('sortable', function (){
             $this->unsignedInteger('sort_num')->nullable();
@@ -40,6 +40,11 @@ class BlueprintServiceProvider extends ServiceProvider
         // 表示
         Blueprint::macro('statusable', function () {
             $this->string('status')->nullable();
+        });
+
+        // フリー検索用
+        Blueprint::macro('searchable', function () {
+            $this->longText('free_search')->nullable();
         });
     }
 }

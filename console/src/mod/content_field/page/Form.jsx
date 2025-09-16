@@ -40,8 +40,8 @@ const Contents = () => {
         },
         { title: '名前', id: 'name', required: true },
         { title: 'フィールドID', id: 'field_id', required: true },
-        { title: '必須項目', id: 'is_required', formType: 'switch' },
-        { title: '一覧見出し', id: 'is_list_heading', formType: 'switch' },
+        { title: '必須項目', id: 'is_required', formType: 'switch', default: false },
+        { title: '一覧見出し', id: 'is_list_heading', formType: 'switch', default: false },
     ]
 
     return (

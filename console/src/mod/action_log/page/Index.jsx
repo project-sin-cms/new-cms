@@ -182,12 +182,6 @@ export const Index = () => {
                                         <>
                                             <TableRow>
                                                 <TableCell className="font-bold w-1/6">
-                                                    エラー
-                                                </TableCell>
-                                                <TableCell>{data?.payload.data.error}</TableCell>
-                                            </TableRow>
-                                            <TableRow>
-                                                <TableCell className="font-bold w-1/6">
                                                     メッセージ
                                                 </TableCell>
                                                 <TableCell>{data?.payload.data.message}</TableCell>

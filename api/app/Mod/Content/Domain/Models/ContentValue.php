@@ -13,6 +13,7 @@ class ContentValue extends BaseModel
         'field_id',
         'value'
     ];
+    protected $model_name = 'content_value';
 
     public function field(): BelongsTo
     {

@@ -17,10 +17,11 @@ class AuditObserver
     {
         $connection = $model->getConnection();
         $connectionName = $connection->getName();
+        $modelName = (string)$model->getName();
 
         // contents登録処理
         $result = DB::connection($connectionName)->select("DESCRIBE {$model->getTable()} free_search");
-        if (!empty($result)) {
+        if (!empty($result) && config("{$modelName}.saving.update_free_search", true)) {
             $contents = [];
             $allowType = ['text', 'varchar', 'longtext'];
             $ignoreFields = ['password', 'free_search', 'created_by_roles', 'updated_by_roles'];

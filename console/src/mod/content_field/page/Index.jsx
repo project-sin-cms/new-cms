@@ -16,7 +16,7 @@ export const Index = () => {
     const columns = [
         { key: 'name', label: '名前' },
         { key: 'field_type', label: 'フィールドタイプ' },
-        { key: 'actions', label: '', _props: { style: { width: '10%' } } },
+        { key: 'actions', label: '', sortable: false, _props: { style: { width: '10%' } } },
     ]
 
     return (

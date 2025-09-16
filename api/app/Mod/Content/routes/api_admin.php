@@ -1,7 +1,9 @@
 <?php
+
+use App\Http\Middleware\ActionLogMiddleware;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('api')->name('api.')->group(function () {
+Route::middleware([ActionLogMiddleware::class])->prefix('api')->name('api.')->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::prefix('content')->name('content.')->group(function () {
 

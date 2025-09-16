@@ -2,7 +2,6 @@
 namespace App\Mod\Content\Domain\Models;
 
 use App\Domain\Models\BaseModel;
-use App\Domain\Models\Traits\AuditObservable;
 use App\Mod\ContentModel\Domain\Models\ContentModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -13,10 +12,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Content extends BaseModel
 {
-    use AuditObservable;
-
     protected $table = "cms_content";
     protected $fillable = ['title'];
+    protected $model_name = 'content';
 
     public function model(): BelongsTo
     {

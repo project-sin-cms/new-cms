@@ -20,7 +20,12 @@ export const Index = () => {
                 newColumns.push({ label: field.name, key: field.field_id })
             }
         })
-        newColumns.push({ key: 'actions', label: '', _props: { style: { width: '10%' } } })
+        newColumns.push({
+            key: 'actions',
+            label: '',
+            sortable: false,
+            _props: { style: { width: '10%' } },
+        })
         setColumns(newColumns)
     }, [modelData])
 

@@ -5,10 +5,11 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Mod\Content\Domain\Models\Content;
 use App\Mod\ContentModel\Domain\Models\ContentModel;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @property Content $model
- * @property ContentModel $contentModel 
+ * @property ContentModel $contentModel
  */
 class ContentService extends AbstractService
 {
@@ -34,6 +35,9 @@ class ContentService extends AbstractService
 
         // categoriesも一旦破棄
         unset($inputs['categories']);
+
+        // 検索フィールドをセット
+        $post->free_search = serialize($request->all());
 
         parent::beforeSave($request, $post, $inputs);
     }
@@ -93,7 +97,7 @@ class ContentService extends AbstractService
                 }
                 $post->categories()->sync($categoryId);
             }
-            
+
         } else {
             // カテゴリ未選択の場合は関連を解除
             $post->categories()->detach();
@@ -116,5 +120,42 @@ class ContentService extends AbstractService
         if (!empty($rules)) {
             $request->validate($rules, $message);
         }
+    }
+
+    protected function customizeListQuery(Request $request, $query): void
+    {
+        $sort = $request->query->get('sort');
+        $direction = $request->query->get('direction');
+
+        if (!$sort || !$direction) {
+            return;
+        }
+
+        $field = $this->contentModel->fields->firstWhere('field_id', $sort);
+        if ($field) {
+            $query->select('cms_content.*'); // 明示しておくと安心
+            $query->selectSub(function ($q) use ($field) {
+                $q->from('cms_content_value as cv')
+                    ->select('cv.value')
+                    ->whereColumn('cv.content_id', 'cms_content.id')
+                    ->where('cv.field_id', $field->id);
+            }, 'sort_value');
+        }
+    }
+
+    protected function getOrderByFromRequest(Request $request): ?array
+    {
+        $sort = $request->query->get('sort', null);
+        $direction = $request->query->get('direction', null);
+        if (!$sort || !$direction) {
+            return null;
+        }
+
+        $field = $this->contentModel->fields->firstWhere('field_id', $sort);
+        if ($field) {
+            return ['sort_value' => $direction];
+        }
+
+        return parent::getOrderByFromRequest($request);
     }
 }

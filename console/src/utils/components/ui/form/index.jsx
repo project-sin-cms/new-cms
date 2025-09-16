@@ -367,7 +367,7 @@ export const FormBuilder = ({ formType = 'text', ...props }) => {
         case 'date':
             return <DatePicker {...props} />
         case 'richtext':
-            return <RichText {...props} />
+            return <Textarea {...props} />
         case 'number':
             return <NumberInput {...props} />
         default:

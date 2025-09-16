@@ -12,6 +12,7 @@ class ContentCategory extends BaseModel
 {
     protected $table = "cms_content_category";
     protected $fillable = ['title', 'model_id'];
+    protected $model_name = 'content_category';
 
     public function contents(): BelongsToMany
     {

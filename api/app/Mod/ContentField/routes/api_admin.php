@@ -1,7 +1,9 @@
 <?php
+
+use App\Http\Middleware\ActionLogMiddleware;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('api')->name('api.')->group(function () {
+Route::middleware([ActionLogMiddleware::class])->prefix('api')->name('api.')->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::prefix('content_field')->name('content_field.')->group(function () {
             Route::get('/', [App\Mod\ContentField\Actions\Admin\ListAction::class, '__invoke'])->name('list');
@@ -11,5 +13,5 @@ Route::prefix('api')->name('api.')->group(function () {
             Route::delete('/{id}', [App\Mod\ContentField\Actions\Admin\DeleteAction::class, '__invoke'])->name('delete');
         });
     });
-    
+
 });

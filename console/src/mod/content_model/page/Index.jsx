@@ -11,7 +11,7 @@ export const Index = () => {
 
     const columns = [
         { key: 'title', label: '名前' },
-        { key: 'actions', label: '', _props: { style: { width: '10%' } } },
+        { key: 'actions', label: '', sortable: false, _props: { style: { width: '10%' } } },
     ]
 
     const addDropdownItems = [

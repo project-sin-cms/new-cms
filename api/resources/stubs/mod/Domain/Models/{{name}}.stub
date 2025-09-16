@@ -15,4 +15,5 @@ class {{name}} extends BaseModel
 
     protected $table = "cms_{{name_lower}}";
     protected $fillable = ['title'];
+    protected $model_name = "{{name_lower}}";
 }

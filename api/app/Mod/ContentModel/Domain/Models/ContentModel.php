@@ -2,7 +2,6 @@
 namespace App\Mod\ContentModel\Domain\Models;
 
 use App\Domain\Models\BaseModel;
-use App\Domain\Models\Traits\AuditObservable;
 use App\Mod\ContentField\Domain\Models\ContentField;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -15,10 +14,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class ContentModel extends BaseModel
 {
-    use AuditObservable;
 
     protected $table = "cms_content_model";
     protected $fillable = ['title'];
+    protected $model_name = 'content_model';
 
     protected $casts = [
         'is_use_category' => 'boolean'

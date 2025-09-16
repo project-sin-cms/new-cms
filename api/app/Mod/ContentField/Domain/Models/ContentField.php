@@ -2,7 +2,6 @@
 namespace App\Mod\ContentField\Domain\Models;
 
 use App\Domain\Models\BaseModel;
-use App\Domain\Models\Traits\AuditObservable;
 
 /**
  * @property int $id
@@ -11,10 +10,9 @@ use App\Domain\Models\Traits\AuditObservable;
  */
 class ContentField extends BaseModel
 {
-    use AuditObservable;
-
     protected $table = "cms_content_field";
     protected $fillable = ['title'];
+    protected $model_name = 'content_field';
 
     protected $casts = [
         'is_list_heading' => 'boolean',

@@ -28,10 +28,16 @@ class BaseService
         $limit = (int)$request->query->get('limit', $limit);
         $orderBy = $this->getOrderByFromRequest($request) ?? $this->model->orderBy();
 
-        $posts = $this->model::where(function ($query) use ($request) {
+        $baseQuery = $this->model::where(function ($query) use ($request) {
             $criteria = $request->get('criteria', []);
             $this->appendCriteria($criteria, $query);
-        })
+        });
+
+        if (method_exists($this, 'customizeListQuery')) {
+            $this->customizeListQuery($request, $baseQuery);
+        }
+
+        $posts = $baseQuery
         ->when(!empty($orderBy), function ($query) use ($orderBy) {
             foreach ($orderBy as $column => $direction) {
                 $query->orderBy($column, $direction);

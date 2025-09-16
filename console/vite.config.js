@@ -6,7 +6,7 @@ import flowbiteReact from 'flowbite-react/plugin/vite'
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
     return {
-        base: mode === 'production' ? '/' : '/',
+        base: mode === 'production' ? '/new-abi-cms/console/dist/' : '/',
         plugins: [
             react(),
             svgr({

@@ -68,7 +68,7 @@ export const Index = () => {
                     addScopedColumns: {
                         file: (item, row, idx) => {
                             return (
-                                <td key={idx} className="text-center">
+                                <td key={idx} className="text-center p-2">
                                     {isImage(item.mime_type) ? (
                                         <div className="flex justify-center">
                                             <img

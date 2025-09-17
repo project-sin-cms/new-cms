@@ -26,6 +26,7 @@ const Contents = () => {
             endpoint: `content/${modelData.alias}/category/resource`,
             isSearchable: true,
             onFetch: (data) => {
+                if (data.length === 0) return null
                 return { label: data[0].title, value: data[0].id }
             },
             position: 'aside',

@@ -20,7 +20,7 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/ja'
 import { Button } from '../button'
 import { NumericFormat } from 'react-number-format'
-import FileUploader from './FileUploader'
+import FileUploader, { MediaImage, MediaFile } from './Media'
 
 const customInputClasses =
     'block w-full border focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-50 border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-500 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 p-2.5 text-sm rounded-lg'
@@ -381,6 +381,10 @@ export const FormBuilder = ({
             return <FileUploader {...props} />
         case 'component':
             return component(props)
+        case 'media_image':
+            return <MediaImage {...props} />
+        case 'media_file':
+            return <MediaFile {...props} />
         default:
             return <TextInput {...props} />
     }

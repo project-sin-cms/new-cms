@@ -57,6 +57,7 @@ import { Select } from '../ui/form'
  * @param {string} [props.options.searchConfig.placeholder='検索...'] 検索フィールドのプレースホルダー
  * @param {Array} [props.options.searchConfig.searchFields=[]] 検索対象フィールド（空の場合は全フィールド検索）
  * @param {Object} [props.options.AdvancedSearchPanel=null] 詳細検索パネルのコンポーネント
+ * @param {Int} [props.options.skeletonRow=10] スケルトンスクリーンの行数
  */
 export const ResourceIndex = forwardRef(({ options }, ref) => {
     const {
@@ -80,6 +81,7 @@ export const ResourceIndex = forwardRef(({ options }, ref) => {
             searchFields: [], // 検索対象フィールド（空の場合は全フィールド検索）
         },
         AdvancedSearchPanel = null,
+        skeletonRow = 10,
     } = options
 
     const { navigateTo } = useNavigation()
@@ -491,6 +493,7 @@ export const ResourceIndex = forwardRef(({ options }, ref) => {
                                 データがありません
                             </div>
                         }
+                        skeletonRow={skeletonRow}
                     />
                     <div className="flex items-center justify-between w-full mt-2 pt-2 border-t">
                         <div className="flex items-center">

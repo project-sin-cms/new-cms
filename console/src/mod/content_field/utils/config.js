@@ -17,4 +17,6 @@ export const fieldItem = [
     // { label: 'セレクトボックス', value: 'select', icon: null },
     // { label: 'チェックボックス', value: 'checkbox', icon: null },
     // { label: 'フラグボタン', value: 'flag', icon: null },
+    { label: '画像', value: 'media_image', icon: null },
+    { label: 'ファイル', value: 'media_file', icon: null },
 ]

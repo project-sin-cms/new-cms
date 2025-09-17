@@ -23,7 +23,7 @@ class ListAction extends BaseAction
         return [
             'success' => true,
             'timestamp' => now()->timestamp,
-            'payload' => $this->domain->findList($request)
+            'payload' => $this->domain->findList($request, null, ['contentValues.field.model', 'contentValues.content'])
         ];
     }
 }

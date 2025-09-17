@@ -83,6 +83,7 @@ export const ResourceForm = forwardRef(({ options }, ref) => {
                 }
             } catch (err) {
                 // エラー処理
+                console.error(err)
             } finally {
                 setIsLoaded(true)
             }

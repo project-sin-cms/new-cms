@@ -19,4 +19,9 @@ class ContentValue extends BaseModel
     {
         return $this->belongsTo(ContentField::class, 'field_id');
     }
+
+    public function content(): BelongsTo
+    {
+        return $this->belongsTo(Content::class, 'content_id');
+    }
 }

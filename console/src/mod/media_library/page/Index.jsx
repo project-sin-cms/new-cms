@@ -15,6 +15,7 @@ export const Index = () => {
     const columns = [
         { key: 'file', label: '', sortable: false, _props: { style: { width: '80px' } } },
         { key: 'file_name', label: 'ファイル名' },
+        { key: 'ref', label: '参照', sortable: false, _props: { style: { width: '8%' } } },
         { key: 'mime_type', label: 'ファイル形式', _props: { style: { width: '8%' } } },
         { key: 'file_size', label: 'サイズ', _props: { style: { width: '10%' } } },
         { key: 'created_at', label: '作成日', _props: { style: { width: '15%' } } },
@@ -22,6 +23,8 @@ export const Index = () => {
     ]
 
     const [showModal, setShowModal] = useState(false)
+    const [showRefsModal, setShowRefsModal] = useState(false)
+    const [refsItem, setRefsItem] = useState(null)
     const [isUploading, setIsUploading] = useState(false)
     const resourceIndexRef = useRef(null)
     const idRef = useRef(null)
@@ -109,6 +112,25 @@ export const Index = () => {
                                 </td>
                             )
                         },
+                        ref: (item, row, idx) => {
+                            const refs = item.content_values || item.contentValues || []
+                            const count = Array.isArray(refs) ? refs.length : 0
+                            return (
+                                <td className="text-center" key={idx}>
+                                    <Button
+                                        size="xs"
+                                        outline
+                                        onClick={() => {
+                                            setRefsItem(item)
+                                            setShowRefsModal(true)
+                                        }}
+                                        disabled={count === 0}
+                                    >
+                                        参照 {count}
+                                    </Button>
+                                </td>
+                            )
+                        },
                         file_size: (item, row, idx) => {
                             return (
                                 <td className="text-end pe-2" key={idx}>
@@ -173,6 +195,46 @@ export const Index = () => {
                                 : 'media_library/store'
                         }
                     />
+                </ModalBody>
+            </Modal>
+
+            {/* 参照表示モーダル */}
+            <Modal show={showRefsModal} onClose={() => setShowRefsModal(false)} size="4xl">
+                <ModalHeader>参照している記事</ModalHeader>
+                <ModalBody>
+                    {!refsItem && <Alert color="warning">対象メディアが選択されていません</Alert>}
+                    {refsItem && (
+                        <div className="space-y-3">
+                            {(refsItem.content_values || refsItem.contentValues || []).length ===
+                                0 && <Alert color="warning">参照はありません</Alert>}
+                            {(refsItem.content_values || refsItem.contentValues || []).map(
+                                (cv, idx) => {
+                                    const content = cv.content || cv?.pivot?.content || cv // 念のため
+                                    const field = cv.field
+                                    return (
+                                        <div
+                                            key={idx}
+                                            className="border rounded p-3 flex items-center justify-between"
+                                        >
+                                            <div className="text-sm">
+                                                <div className="font-medium text-gray-800 dark:text-gray-100">
+                                                    {content?.title ||
+                                                        `${field?.model.title} #${content?.id}`}
+                                                </div>
+                                                <div className="text-gray-500 dark:text-gray-400">
+                                                    フィールド: {field?.title || field?.field_id}（
+                                                    {field?.field_type}）
+                                                </div>
+                                            </div>
+                                            <div className="text-xs text-gray-400">
+                                                ID: {content?.id}
+                                            </div>
+                                        </div>
+                                    )
+                                }
+                            )}
+                        </div>
+                    )}
                 </ModalBody>
             </Modal>
         </>

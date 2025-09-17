@@ -135,7 +135,12 @@ export const ResourceForm = forwardRef(({ options }, ref) => {
                                 <Row cols={12}>
                                     <Col col={aSideFormItem.length > 0 ? 9 : 12}>
                                         {mainFormItem?.map((item, index) => {
-                                            const { title, required = false, ...rest } = item
+                                            const {
+                                                title,
+                                                required = false,
+                                                onFetch,
+                                                ...rest
+                                            } = item
                                             if (item.formType === 'hidden') {
                                                 return <></>
                                             }

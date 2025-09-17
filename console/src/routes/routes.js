@@ -4,6 +4,7 @@ import { routes as contentModelRoutes } from '../mod/content_model/routes/routes
 import { routes as actionLogRoutes } from '../mod/action_log/routes/routes'
 import { routes as contentFieldRoutes } from '../mod/content_field/routes/routes'
 import { routes as contentRoutes } from '../mod/content/routes/routes'
+import { routes as mediaLibraryRoutes } from '../mod/media_library/routes/routes'
 
 export const routes = [
     ...skeletonRoutes,
@@ -12,4 +13,5 @@ export const routes = [
     ...actionLogRoutes,
     ...contentFieldRoutes,
     ...contentRoutes,
+    ...mediaLibraryRoutes,
 ]

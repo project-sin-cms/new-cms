@@ -117,7 +117,18 @@ class BaseService
     public function delete(Request $request, ?int $id = null): array
     {
         $model = $this->findDetail($request, $id);
+
+        // 削除前処理
+        if (method_exists($this, 'beforeDelete')) {
+            $this->beforeDelete($request, $model);
+        }
+
         $model->delete();
+
+        // 削除後処理
+        if (method_exists($this, 'afterDelete')) {
+            $this->afterDelete($request, $model);
+        }
 
         return [
             'id' => $model->id,

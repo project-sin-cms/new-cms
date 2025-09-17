@@ -1,11 +1,23 @@
-const Contents = ({ children }) => {
-    return <>{children}</>
+import { ResourceForm } from '../../../utils/components/common/ResourceForm'
+import { config } from '../utils/config'
+import { useParams } from 'react-router'
+
+const Form = ({ pageName }) => {
+    const { id } = useParams()
+    const breads = [{ name: config.name, path: config.path }, { name: pageName }]
+    const formItem = [{ title: 'タイトル', id: 'title', required: true }]
+
+    return (
+        <>
+            <ResourceForm options={{ breads, config, formItem, id }} />
+        </>
+    )
 }
 
 export const New = () => {
     return (
         <>
-            <Contents>新規作成</Contents>
+            <Form pageName={'新規作成'} />
         </>
     )
 }
@@ -13,7 +25,7 @@ export const New = () => {
 export const Edit = () => {
     return (
         <>
-            <Contents>編集</Contents>
+            <Form pageName={'編集'} />
         </>
     )
 }

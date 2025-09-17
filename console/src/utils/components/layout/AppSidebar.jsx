@@ -21,6 +21,11 @@ const baseNav = [
         // subItems: [{ name: 'model', path: '/content_model', pro: false }],
     },
     {
+        name: 'メディアライブラリ',
+        icon: <ListIcon />,
+        path: '/media_library',
+    },
+    {
         name: '操作ログ',
         icon: <ListIcon />,
         path: '/action_log',

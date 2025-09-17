@@ -20,6 +20,7 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/ja'
 import { Button } from '../button'
 import { NumericFormat } from 'react-number-format'
+import FileUploader from './FileUploader'
 
 const customInputClasses =
     'block w-full border focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-50 border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-500 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 p-2.5 text-sm rounded-lg'
@@ -352,7 +353,13 @@ export const NumberInput = ({ defaultValue, onChange = () => {}, className = '',
  * @param {object} props - Props passed to the rendered component.
  * @param {string} formType - Type of form input to render.
  */
-export const FormBuilder = ({ formType = 'text', ...props }) => {
+export const FormBuilder = ({
+    formType = 'text',
+    component = () => {
+        return <></>
+    },
+    ...props
+}) => {
     switch (formType) {
         case 'textarea':
             return <Textarea {...props} />
@@ -370,6 +377,10 @@ export const FormBuilder = ({ formType = 'text', ...props }) => {
             return <Textarea {...props} />
         case 'number':
             return <NumberInput {...props} />
+        case 'uploader':
+            return <FileUploader {...props} />
+        case 'component':
+            return component(props)
         default:
             return <TextInput {...props} />
     }

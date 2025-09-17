@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react'
+import React, { useEffect, useRef, useState, useMemo, useImperativeHandle, forwardRef } from 'react'
 import { useNavigation } from '../../hooks/useNavigation'
 import { useLocation, useNavigate } from 'react-router'
 import { useAxios } from '../../hooks/useAxios'
@@ -58,7 +58,7 @@ import { Select } from '../ui/form'
  * @param {Array} [props.options.searchConfig.searchFields=[]] 検索対象フィールド（空の場合は全フィールド検索）
  * @param {Object} [props.options.AdvancedSearchPanel=null] 詳細検索パネルのコンポーネント
  */
-export const ResourceIndex = ({ options }) => {
+export const ResourceIndex = forwardRef(({ options }, ref) => {
     const {
         breads = [],
         config,
@@ -348,6 +348,27 @@ export const ResourceIndex = ({ options }) => {
         return <HiOutlineSwitchVertical className="w-4 h-4 ml-1 text-gray-400" />
     }
 
+    // 外部から呼び出せるメソッドを定義
+    useImperativeHandle(
+        ref,
+        () => ({
+            refresh: () => {
+                fetchContentModels({
+                    method: 'get',
+                    url:
+                        `${config.end_point}?` +
+                        getUrlParams({
+                            current: currentPage,
+                            limit: itemsPerPage,
+                            ...baseParams,
+                            ...computedSearchParams,
+                        }),
+                })
+            },
+        }),
+        [config.end_point, currentPage, itemsPerPage, baseParams, computedSearchParams]
+    )
+
     return (
         <>
             <Card>
@@ -572,4 +593,4 @@ export const ResourceIndex = ({ options }) => {
             </Modal>
         </>
     )
-}
+})

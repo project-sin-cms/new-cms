@@ -25,6 +25,6 @@ class ContentModelFrontDetailTest extends AbstractFeatureTest
     protected function apiExec(array $params = [], array $data = [], array $headers = []): TestResponse
     {
         // TODO: Implement apiExec() method.
-        return $this->get($this->getUrl('api.content_model.front.detail', $params), $headers);
+        return $this->get($this->getUrl('api.front.content_model.detail', $params), $headers);
     }
 }

@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class ContentField extends BaseModel
 {
     protected $table = "cms_content_field";
-    protected $fillable = ['title'];
+    protected $fillable = ['name', 'field_id', 'model_id', 'is_required', 'is_list_heading', 'field_type', 'sort_num'];
     protected $model_name = 'content_field';
 
     protected $casts = [

@@ -22,6 +22,6 @@ class ActionLogAdminDeleteTest extends AbstractFeatureTest
     protected function apiExec(array $params = [], array $data = [], array $headers = []): TestResponse
     {
         // TODO: Implement apiExec() method.
-        return $this->delete($this->getUrl('api.action_log.admin.delete', $params), $data, $headers);
+        return $this->delete($this->getUrl('api.admin.action_log.delete', $params), $data, $headers);
     }
 }

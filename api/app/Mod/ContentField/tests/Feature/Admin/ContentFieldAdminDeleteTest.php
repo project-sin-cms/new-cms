@@ -22,6 +22,6 @@ class ContentFieldAdminDeleteTest extends AbstractFeatureTest
     protected function apiExec(array $params = [], array $data = [], array $headers = []): TestResponse
     {
         // TODO: Implement apiExec() method.
-        return $this->delete($this->getUrl('api.content_field.admin.delete', $params), $data, $headers);
+        return $this->delete($this->getUrl('api.admin.content_field.delete', $params), $data, $headers);
     }
 }

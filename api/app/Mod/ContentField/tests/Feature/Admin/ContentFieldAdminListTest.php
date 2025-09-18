@@ -28,7 +28,7 @@ class ContentFieldAdminListTest extends AbstractFeatureTest
 
     protected function apiExec(array $params = [], array $data = [], array $headers = []): TestResponse
     {
-        return $this->get($this->getUrl('api.content_field.admin.list', $params), $headers);
+        return $this->get($this->getUrl('api.admin.content_field.list', $params), $headers);
     }
 
 }

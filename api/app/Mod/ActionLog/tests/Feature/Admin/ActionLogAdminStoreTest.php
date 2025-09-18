@@ -28,6 +28,6 @@ class ActionLogAdminStoreTest extends AbstractFeatureTest
     protected function apiExec(array $params = [], array $data = [], array $headers = []): TestResponse
     {
         // TODO: Implement apiExec() method.
-        return $this->post($this->getUrl('api.action_log.admin.store'), $data, $headers);
+        return $this->post($this->getUrl('api.admin.action_log.store'), $data, $headers);
     }
 }

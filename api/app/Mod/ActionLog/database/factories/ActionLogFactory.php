@@ -11,7 +11,13 @@ class ActionLogFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->word
+            'ip' => $this->faker->ipv4,
+            'user_agent' => $this->faker->userAgent,
+            'path' => $this->faker->filePath(),
+            'method' => $this->faker->randomElement(['GET', 'POST', 'PUT', 'DELETE']),
+            'params' => ['key' => $this->faker->word],
+            'http_status' => $this->faker->randomElement([200, 201, 400, 404, 500]),
+            'duration' => $this->faker->randomFloat(4, 0, 2),
         ];
     }
 }

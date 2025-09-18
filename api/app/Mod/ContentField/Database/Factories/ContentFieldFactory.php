@@ -11,7 +11,11 @@ class ContentFieldFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->word
+            'name' => $this->faker->word,
+            'field_id' => $this->faker->unique()->word,
+            'is_required' => $this->faker->boolean,
+            'is_list_heading' => $this->faker->boolean,
+            'field_type' => 'text',
         ];
     }
 }

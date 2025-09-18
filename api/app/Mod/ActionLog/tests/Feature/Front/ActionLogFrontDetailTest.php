@@ -25,6 +25,6 @@ class ActionLogFrontDetailTest extends AbstractFeatureTest
     protected function apiExec(array $params = [], array $data = [], array $headers = []): TestResponse
     {
         // TODO: Implement apiExec() method.
-        return $this->get($this->getUrl('api.action_log.front.detail', $params), $headers);
+        return $this->get($this->getUrl('api.front.action_log.detail', $params), $headers);
     }
 }

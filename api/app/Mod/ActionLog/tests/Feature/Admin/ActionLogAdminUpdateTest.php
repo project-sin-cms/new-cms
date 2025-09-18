@@ -26,6 +26,6 @@ class ActionLogAdminUpdateTest extends AbstractFeatureTest
     protected function apiExec(array $params = [], array $data = [], array $headers = []): TestResponse
     {
         // TODO: Implement apiExec() method.
-        return $this->put($this->getUrl('api.action_log.admin.update', $params), $data, $headers);
+        return $this->put($this->getUrl('api.admin.action_log.update', $params), $data, $headers);
     }
 }

@@ -15,55 +15,31 @@ class AuditObserver
      */
     public function saving(Model $model): void
     {
-        $connection = $model->getConnection();
-        $connectionName = $connection->getName();
         $modelName = (string)$model->getName();
 
-        // contents登録処理
-        $result = DB::connection($connectionName)->select("DESCRIBE {$model->getTable()} free_search");
-        if (!empty($result) && config("{$modelName}.saving.update_free_search", true)) {
-            $contents = [];
-            $allowType = ['text', 'varchar', 'longtext'];
-            $ignoreFields = ['password', 'free_search', 'created_by_roles', 'updated_by_roles'];
-
-            // カラム情報取得
-            $columns = DB::connection($connectionName)->select("DESCRIBE {$model->getTable()}");
-            foreach ($columns as $column) {
-                $isAllow = false;
-                $field = $column->Field;
-
-                // テキスト型のみ
-                foreach ($allowType as $type) {
-                    if (strpos($column->Type, $type) !== false) {
-                        $isAllow = true;
-                        break;
-                    }
-                }
-
-                // 除外カラム
-                if (in_array($field, $ignoreFields)) {
-                    $isAllow = false;
-                }
-
-                if ($isAllow) {
-                    if (is_string($model->{$field})) {
-                        $contents[] = $model->{$field};
-                    }
-                    elseif(is_array($model->{$field})) {
-                        // 配列内のテキスト
-                        $vals = [];
-                        foreach ($model->{$field} as $value) {
-                            if (is_string($value)) {
-                                $vals[] = $value;
-                            }
-                        }
-                        if (!empty($vals)) {
-                            $contents[] = $vals;
-                        }
-                    }
-                }
-            }
-            $model->free_search = serialize($contents);
+        // free_search登録処理
+        if (config("{$modelName}.saving.update_free_search", true)) {
+            $ignoreFields = ['password', 'free_search', 'created_by_roles', 'updated_by_roles', 'created_at', 'updated_at'];
+            $modelData = $model->toArray();
+            $freeSearch = $this->getFreeWordContents([], $ignoreFields, $modelData);
+            $model->free_search = serialize($freeSearch);
         }
+    }
+
+    protected function getFreeWordContents(array $freeSearch = [], array $ignoreFields = [], array $modelData = []): array
+    {
+        foreach ($modelData as $key => $value) {
+            if (is_array($value)) {
+                $freeSearch = $this->getFreeWordContents($freeSearch, $ignoreFields, $value);
+            } else if (is_string($value)) {
+                if (in_array($key, $ignoreFields)) {
+                    continue;
+                }
+
+                $freeSearch[] = $value;
+            }
+        }
+
+        return $freeSearch;
     }
 }

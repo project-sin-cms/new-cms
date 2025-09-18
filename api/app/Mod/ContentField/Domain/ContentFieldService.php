@@ -4,6 +4,7 @@ namespace App\Mod\ContentField\Domain;
 use App\Domain\BaseService;
 use Symfony\Component\HttpFoundation\Request;
 use App\Mod\ContentField\Domain\Models\ContentField;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 /**
@@ -27,17 +28,22 @@ class ContentFieldService extends BaseService
 
     protected function validateRequest(Request $request, mixed $post = null): void
     {
-        $request->validate(
+        $validator = Validator::make(
+            $request->all(),
             [
                 "name" => ['required'],
+                'model_id' => ['required'],
                 'field_id' => ['required', Rule::unique($this->model->getTable(), 'field_id')->where('model_id', $request->input('model_id'))->ignore($post->id)]
             ],
             [
                 'name.required' => '名前は必須項目です。',
+                'model_id.required' => 'ModelIDは必須項目です。',
                 'field_id.required' => 'フィールドIDは必須項目です。',
                 'field_id.unique' => 'このフィールドIDは既に使用されています。'
             ]
         );
+
+        $validator->validate();
     }
 
 }

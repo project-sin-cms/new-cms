@@ -3,7 +3,7 @@ namespace App\Mod\MediaLibrary\Tests\Unit;
 
 use App\Mod\MediaLibrary\Domain\MediaLibraryService;
 use App\Mod\MediaLibrary\Domain\Models\MediaLibrary;
-use Symfony\Component\HttpFoundation\Request;
+use Illuminate\Http\Request;
 use Tests\Unit\AbstractUnitTest;
 
 class MediaLibraryDomainTest extends AbstractUnitTest
@@ -57,16 +57,15 @@ class MediaLibraryDomainTest extends AbstractUnitTest
     {
         // データ作成テスト
         $inputData = MediaLibrary::factory()->make()->toArray();
-        $request = new Request();
-        $request->request->add($inputData);
+        $request = Request::create('/fake-uri', 'POST', $inputData);
         $result = $this->service->save($request);
         $post = MediaLibrary::find($result->id);
         $this->assertEquals($inputData['title'], $post->title);
 
         // データ更新テスト
         $inputData['title'] .= ' edit';
-        $request->request->add($inputData);
-        $this->service->save($request, $result->id);
+        $updateRequest = Request::create('/fake-uri/' . $result->id, 'POST', $inputData);
+        $this->service->save($updateRequest, $result->id);
         $post = MediaLibrary::find($result->id);
         $this->assertEquals($inputData['title'], $post->title);
     }

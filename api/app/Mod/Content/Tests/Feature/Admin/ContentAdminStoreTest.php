@@ -83,6 +83,6 @@ class ContentAdminStoreTest extends AbstractFeatureTest
     protected function apiExec(array $params = [], array $data = [], array $headers = []): TestResponse
     {
         // TODO: Implement apiExec() method.
-        return $this->post($this->getUrl('api.admin.content.model.store', $params), $data, $headers);
+        return $this->postJson($this->getUrl('api.admin.content.model.store', $params), $data, $headers);
     }
 }

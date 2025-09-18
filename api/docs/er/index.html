@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ER Diagram</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 2em; /* 上下左右に余白を追加 */
+        }
+        .mermaid {
+            width: 100%;
+            min-width: 800px;
+            min-height: 600px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <!-- The Mermaid diagram will be loaded here -->
+    <pre class="mermaid"></pre>
+
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+
+        async function loadDiagram() {
+            try {
+                // Fetch the Markdown file
+                const response = await fetch('er-diagram.md');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                const markdownText = await response.text();
+
+                // Extract the content from the mermaid code block
+                const mermaidContent = markdownText.replace(/```mermaid\n|```/g, '').trim();
+
+                // Set the content and render
+                const mermaidContainer = document.querySelector('.mermaid');
+                mermaidContainer.textContent = mermaidContent;
+
+                // Initialize Mermaid
+                mermaid.initialize({ startOnLoad: true });
+                await mermaid.run();
+
+            } catch (error) {
+                console.error('Failed to load or render diagram:', error);
+                document.querySelector('.mermaid').textContent = 'Error: Could not load er-diagram.md';
+            }
+        }
+
+        loadDiagram();
+    </script>
+</body>
+</html>

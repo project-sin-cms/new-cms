@@ -24,7 +24,7 @@ class DetailAction extends BaseAction
         return [
             'success' => true,
             'timestamp' => now()->timestamp,
-            'contents' => $this->domain->findDetail($id)
+            'contents' => $this->domain->findDetail($request, $id)
         ];
     }
 }

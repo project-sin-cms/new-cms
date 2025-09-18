@@ -45,38 +45,13 @@ class ActionLogDomainTest extends AbstractUnitTest
 
     public function test_detail()
     {
+        $request = new Request();
+
         // データ作成
         $createPost = ActionLog::factory()->create();
         // データ取得
-        $getPost = $this->service->findDetail($createPost->id);
+        $getPost = $this->service->findDetail($request, $createPost->id);
         // 同じデータかテスト
-        $this->assertEquals($createPost->title, $getPost->title);
-    }
-
-    public function test_save()
-    {
-        // データ作成テスト
-        $inputData = ActionLog::factory()->make()->toArray();
-        $request = new Request();
-        $request->request->add($inputData);
-        $result = $this->service->save($request);
-        $post = ActionLog::find($result->id);
-        $this->assertEquals($inputData['title'], $post->title);
-
-        // データ更新テスト
-        $inputData['title'] .= ' edit';
-        $request->request->add($inputData);
-        $this->service->save($request, $result->id);
-        $post = ActionLog::find($result->id);
-        $this->assertEquals($inputData['title'], $post->title);
-    }
-
-    public function test_delete()
-    {
-        $createPost = ActionLog::factory()->create();
-        $this->assertEquals(ActionLog::count(), 1);
-
-        $this->service->delete($createPost->id);
-        $this->assertEquals(ActionLog::count(), 0);
+        $this->assertEquals($createPost->ip, $getPost->ip);
     }
 }

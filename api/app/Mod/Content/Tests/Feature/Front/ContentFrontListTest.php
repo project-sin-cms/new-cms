@@ -27,6 +27,6 @@ class ContentFrontListTest extends AbstractFeatureTest
 
     protected function apiExec(array $params = [], array $data = [], array $headers = []): TestResponse
     {
-        return $this->get($this->getUrl('api.content.front.list', $params), $headers);
+        return $this->getJson($this->getUrl('api.content.front.list', $params), $headers);
     }
 }

@@ -28,7 +28,7 @@ class {{name}}AdminListTest extends AbstractFeatureTest
 
     protected function apiExec(array $params = [], array $data = [], array $headers = []): TestResponse
     {
-        return $this->get($this->getUrl('api.admin.{{name_lower}}.list', $params), $headers);
+        return $this->getJson($this->getUrl('api.admin.{{name_lower}}.list', $params), $headers);
     }
 
 }

@@ -27,6 +27,6 @@ class MediaLibraryAdminDetailTest extends AbstractFeatureTest
     protected function apiExec(array $params = [], array $data = [], array $headers = []): TestResponse
     {
         // TODO: Implement apiExec() method.
-        return $this->get($this->getUrl('api.media_library.admin.detail', $params), $headers);
+        return $this->getJson($this->getUrl('api.media_library.admin.detail', $params), $headers);
     }
 }

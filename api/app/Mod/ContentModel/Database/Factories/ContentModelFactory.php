@@ -11,7 +11,10 @@ class ContentModelFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->word
+            'title' => $this->faker->word,
+            'alias' => $this->faker->word,
+            'description' => $this->faker->word,
+            'is_use_category' => $this->faker->randomElement([true, false]),
         ];
     }
 }

@@ -9,11 +9,22 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
+ * @property string $title
+ * @property int $model_id
+ * @property \Carbon\Carbon|null $publish_at
+ * @property \Carbon\Carbon|null $expires_at
+ * @property int|null $sort_num
+ * @property mixed $status
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \App\Mod\ContentModel\Domain\Models\ContentModel $model
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Mod\Content\Domain\Models\ContentValue[] $values
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Mod\Content\Domain\Models\ContentCategory[] $categories
  */
 class Content extends BaseModel
 {
     protected $table = "cms_content";
-    protected $fillable = ['title'];
+    protected $fillable = [];
     protected $model_name = 'content';
 
     public function model(): BelongsTo

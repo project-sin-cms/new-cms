@@ -11,6 +11,17 @@ class BaseModel extends Model {
 
     protected $model_name = null;
 
+    public function __construct(array $attributes = [])
+    {
+        $this->fillable += ['publish_at', 'expires_at', 'sort_num', 'status'];
+        $this->casts += [
+            'publish_at' => 'datetime',
+            'expires_at' => 'datetime',
+            'sort_num' => 'int',
+        ];
+        parent::__construct($attributes);
+    }
+
     public function orderBy(): array
     {
         return ['id' => 'asc'];

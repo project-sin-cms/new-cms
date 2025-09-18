@@ -26,6 +26,6 @@ class ContentModelAdminUpdateTest extends AbstractFeatureTest
     protected function apiExec(array $params = [], array $data = [], array $headers = []): TestResponse
     {
         // TODO: Implement apiExec() method.
-        return $this->put($this->getUrl('api.admin.content_model.update', $params), $data, $headers);
+        return $this->putJson($this->getUrl('api.admin.content_model.update', $params), $data, $headers);
     }
 }

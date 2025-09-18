@@ -44,5 +44,13 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
 
+  docs:
+    image: nginx:alpine
+    container_name: new-cms-docs
+    ports:
+      - "8081:80"
+    volumes:
+      - ./api/docs:/usr/share/nginx/html:ro
+
 volumes:
   mysql-data:

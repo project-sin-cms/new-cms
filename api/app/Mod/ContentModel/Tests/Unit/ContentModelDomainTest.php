@@ -3,7 +3,7 @@ namespace App\Mod\ContentModel\Tests\Unit;
 
 use App\Mod\ContentModel\Domain\ContentModelService;
 use App\Mod\ContentModel\Domain\Models\ContentModel;
-use Symfony\Component\HttpFoundation\Request;
+use Illuminate\Http\Request;
 use Tests\Unit\AbstractUnitTest;
 
 class ContentModelDomainTest extends AbstractUnitTest
@@ -45,10 +45,12 @@ class ContentModelDomainTest extends AbstractUnitTest
 
     public function test_detail()
     {
+        $request = new Request();
+
         // データ作成
         $createPost = ContentModel::factory()->create();
         // データ取得
-        $getPost = $this->service->findDetail($createPost->id);
+        $getPost = $this->service->findDetail($request, $createPost->id);
         // 同じデータかテスト
         $this->assertEquals($createPost->title, $getPost->title);
     }
@@ -57,26 +59,26 @@ class ContentModelDomainTest extends AbstractUnitTest
     {
         // データ作成テスト
         $inputData = ContentModel::factory()->make()->toArray();
-        $request = new Request();
-        $request->request->add($inputData);
+        $request = Request::create('/fake-uri', 'POST', $inputData);
         $result = $this->service->save($request);
         $post = ContentModel::find($result->id);
         $this->assertEquals($inputData['title'], $post->title);
 
         // データ更新テスト
         $inputData['title'] .= ' edit';
-        $request->request->add($inputData);
-        $this->service->save($request, $result->id);
+        $updateRequest = Request::create('/fake-uri/' . $result->id, 'POST', $inputData);
+        $this->service->save($updateRequest, $result->id);
         $post = ContentModel::find($result->id);
         $this->assertEquals($inputData['title'], $post->title);
     }
 
     public function test_delete()
     {
+        $request = new Request();
         $createPost = ContentModel::factory()->create();
         $this->assertEquals(ContentModel::count(), 1);
 
-        $this->service->delete($createPost->id);
+        $this->service->delete($request, $createPost->id);
         $this->assertEquals(ContentModel::count(), 0);
     }
 }

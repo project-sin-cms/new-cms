@@ -2,6 +2,7 @@
 
 namespace App\Mod\Content\Tests\Feature\Admin;
 
+use App\Mod\Content\Domain\Models\Content;
 use App\Mod\ContentModel\Domain\Models\ContentModel;
 use Illuminate\Testing\TestResponse;
 use Tests\Feature\AbstractFeatureTest;
@@ -28,6 +29,6 @@ class ContentAdminDetailTest extends AbstractFeatureTest
     protected function apiExec(array $params = [], array $data = [], array $headers = []): TestResponse
     {
         // TODO: Implement apiExec() method.
-        return $this->get($this->getUrl('api.admin.content.model.detail', $params), $headers);
+        return $this->getJson($this->getUrl('api.admin.content.model.detail', $params), $headers);
     }
 }

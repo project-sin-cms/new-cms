@@ -1,6 +1,7 @@
 <?php
 namespace App\Mod\Content\Tests\Feature\Admin;
 
+use App\Mod\Content\Domain\Models\Content;
 use App\Mod\ContentModel\Domain\Models\ContentModel;
 use Illuminate\Testing\TestResponse;
 use Tests\Feature\AbstractFeatureTest;
@@ -30,7 +31,7 @@ class ContentAdminListTest extends AbstractFeatureTest
 
     protected function apiExec(array $params = [], array $data = [], array $headers = []): TestResponse
     {
-        return $this->get($this->getUrl('api.admin.content.model.list', $params), $headers);
+        return $this->getJson($this->getUrl('api.admin.content.model.list', $params), $headers);
     }
 
 }

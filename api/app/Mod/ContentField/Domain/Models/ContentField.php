@@ -7,8 +7,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int $id
+ * @property string $name
+ * @property string $field_id
+ * @property int $model_id
  * @property string $title
  * @property string $body
+ * @property bool $is_required
+ * @property bool $is_list_heading
+ * @property string $field_type
+ * @property int|null $sort_num
+ * @property \Carbon\Carbon|null $publish_at
+ * @property \Carbon\Carbon|null $expires_at
+ * @property mixed $status
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \App\Mod\ContentModel\Domain\Models\ContentModel $model
  */
 class ContentField extends BaseModel
 {

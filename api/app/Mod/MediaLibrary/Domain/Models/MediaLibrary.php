@@ -16,6 +16,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $file_size
  * @property string $image_size
  * @property string $alt_text
+ * @property \Carbon\Carbon|null $publish_at
+ * @property \Carbon\Carbon|null $expires_at
+ * @property int|null $sort_num
+ * @property mixed $status
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Mod\Content\Domain\Models\ContentValue[] $contentValues
  */
 class MediaLibrary extends BaseModel
 {

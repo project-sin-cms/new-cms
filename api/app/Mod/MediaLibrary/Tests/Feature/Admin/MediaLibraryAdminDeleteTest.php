@@ -22,6 +22,6 @@ class MediaLibraryAdminDeleteTest extends AbstractFeatureTest
     protected function apiExec(array $params = [], array $data = [], array $headers = []): TestResponse
     {
         // TODO: Implement apiExec() method.
-        return $this->delete($this->getUrl('api.media_library.admin.delete', $params), $data, $headers);
+        return $this->deleteJson($this->getUrl('api.media_library.admin.delete', $params), $data, $headers);
     }
 }

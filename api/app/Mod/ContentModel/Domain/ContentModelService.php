@@ -4,6 +4,7 @@ namespace App\Mod\ContentModel\Domain;
 use App\Domain\BaseService;
 use Symfony\Component\HttpFoundation\Request;
 use App\Mod\ContentModel\Domain\Models\ContentModel;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 /**
@@ -27,7 +28,8 @@ class ContentModelService extends BaseService
 
     protected function validateRequest(Request $request, mixed $post = null): void
     {
-        $request->validate(
+        $validator = Validator::make(
+            $request->all(),
             [
                 "title" => ['required'],
                 'alias' => ['required', Rule::unique($this->model->getTable(), 'alias')->ignore($post->id)]
@@ -38,5 +40,7 @@ class ContentModelService extends BaseService
                 'alias.unique' => 'このエイリアスは既に使用されています。'
             ]
         );
+
+        $validator->validate();
     }
 }

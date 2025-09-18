@@ -15,7 +15,7 @@ class ContentFieldFactory extends Factory
             'field_id' => $this->faker->unique()->word,
             'is_required' => $this->faker->boolean,
             'is_list_heading' => $this->faker->boolean,
-            'field_type' => 'text',
+            'field_type' => $this->faker->randomElement(['text', 'textarea', 'media_image', 'media_file']),
         ];
     }
 }

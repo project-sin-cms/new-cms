@@ -3,7 +3,7 @@ namespace App\Mod\Content\Tests\Unit;
 
 use App\Mod\Content\Domain\ContentService;
 use App\Mod\Content\Domain\Models\Content;
-use Symfony\Component\HttpFoundation\Request;
+use Illuminate\Http\Request;
 use Tests\Unit\AbstractUnitTest;
 
 class ContentDomainTest extends AbstractUnitTest
@@ -57,16 +57,15 @@ class ContentDomainTest extends AbstractUnitTest
     {
         // データ作成テスト
         $inputData = Content::factory()->make()->toArray();
-        $request = new Request();
-        $request->request->add($inputData);
+        $request = Request::create('/fake-uri', 'POST', $inputData);
         $result = $this->service->save($request);
         $post = Content::find($result->id);
         $this->assertEquals($inputData['title'], $post->title);
 
         // データ更新テスト
         $inputData['title'] .= ' edit';
-        $request->request->add($inputData);
-        $this->service->save($request, $result->id);
+        $updateRequest = Request::create('/fake-uri/' . $result->id, 'POST', $inputData);
+        $this->service->save($updateRequest, $result->id);
         $post = Content::find($result->id);
         $this->assertEquals($inputData['title'], $post->title);
     }

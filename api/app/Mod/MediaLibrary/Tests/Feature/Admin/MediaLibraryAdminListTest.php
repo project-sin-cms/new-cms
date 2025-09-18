@@ -28,7 +28,7 @@ class MediaLibraryAdminListTest extends AbstractFeatureTest
 
     protected function apiExec(array $params = [], array $data = [], array $headers = []): TestResponse
     {
-        return $this->get($this->getUrl('api.media_library.admin.list', $params), $headers);
+        return $this->getJson($this->getUrl('api.media_library.admin.list', $params), $headers);
     }
 
 }

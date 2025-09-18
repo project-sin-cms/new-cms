@@ -2,6 +2,7 @@
 
 namespace App\Mod\Content\Tests\Feature\Admin;
 
+use App\Mod\Content\Domain\Models\Content;
 use App\Mod\ContentModel\Domain\Models\ContentModel;
 use Illuminate\Testing\TestResponse;
 use Tests\Feature\AbstractFeatureTest;
@@ -23,6 +24,6 @@ class ContentAdminDeleteTest extends AbstractFeatureTest
     protected function apiExec(array $params = [], array $data = [], array $headers = []): TestResponse
     {
         // TODO: Implement apiExec() method.
-        return $this->delete($this->getUrl('api.admin.content.model.delete', $params), $data, $headers);
+        return $this->deleteJson($this->getUrl('api.admin.content.model.delete', $params), $data, $headers);
     }
 }

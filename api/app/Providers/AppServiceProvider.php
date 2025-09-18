@@ -48,24 +48,24 @@ class AppServiceProvider extends ServiceProvider
             if (is_dir($migrationPath)) {
                 $this->loadMigrationsFrom($migrationPath);
             }
-
-            // dynamic autoload
-            // get mod name
-            $module = null;
-            $pattern = '/\/([^\/]+)$/';
-            if (preg_match($pattern, $mod, $matches)) {
-                $module = $matches[1];
-            }
-
-            if ($module) {
-                // app/Mod/*/Database/Factories
-                if (is_dir($mod . '/Database/Factories')) {
-                    $factoryNamespace = "App\\Mod\\{$module}\\Database\\Factories";
-                    Factory::guessFactoryNamesUsing(function (string $modelName) use ($module, $factoryNamespace) {
-                        return $factoryNamespace . '\\' . class_basename($modelName) . 'Factory';
-                    });
-                }
-            }
         }
+
+        // Custom factory resolver for Mods
+        Factory::guessFactoryNamesUsing(function (string $modelName) {
+            // For models inside a "Mod"
+            if (preg_match('/^App\\\\Mod\\\\([^\\\\]+)/', $modelName, $matches)) {
+                $module = $matches[1];
+                return "App\\Mod\\{$module}\\Database\\Factories\\" . class_basename($modelName) . 'Factory';
+            }
+
+            // Default Laravel factory name resolution
+            $appNamespace = app()->getNamespace();
+
+            $resolvedModelName = str_starts_with($modelName, $appNamespace . 'Models\\')
+                ? substr($modelName, strlen($appNamespace . 'Models\\'))
+                : substr($modelName, strlen($appNamespace));
+
+            return 'Database\Factories\\' . $resolvedModelName . 'Factory';
+        });
     }
 }

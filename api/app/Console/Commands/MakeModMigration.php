@@ -45,11 +45,11 @@ class MakeModMigration extends Command
         $selectedModule = $this->choice('Select the Mod', $modules->toArray());
 
         // ファイルパスを決定
-        $migrationDir = $modulePath . "/$selectedModule/database/migrations";
+        $migrationDir = $modulePath . "/$selectedModule/Database/migrations";
         if (!File::isDirectory($migrationDir)) {
             File::makeDirectory($migrationDir, 0755, true);
         }
-        $migrationPath = "app/Mod/{$selectedModule}/database/migrations";
+        $migrationPath = "app/Mod/{$selectedModule}/Database/migrations";
 
         // マイグレーション名からファイル名を生成
         $migrationName = $this->argument('name');

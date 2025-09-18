@@ -44,7 +44,7 @@ class AppServiceProvider extends ServiceProvider
             }
 
             // migration
-            $migrationPath = $mod . '/database/migrations';
+            $migrationPath = $mod . '/Database/migrations';
             if (is_dir($migrationPath)) {
                 $this->loadMigrationsFrom($migrationPath);
             }
@@ -58,8 +58,8 @@ class AppServiceProvider extends ServiceProvider
             }
 
             if ($module) {
-                // app/Mod/*/database/factories
-                if (is_dir($mod . '/database/factories')) {
+                // app/Mod/*/Database/Factories
+                if (is_dir($mod . '/Database/Factories')) {
                     $factoryNamespace = "App\\Mod\\{$module}\\Database\\Factories";
                     Factory::guessFactoryNamesUsing(function (string $modelName) use ($module, $factoryNamespace) {
                         return $factoryNamespace . '\\' . class_basename($modelName) . 'Factory';

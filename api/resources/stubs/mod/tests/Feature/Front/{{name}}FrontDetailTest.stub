@@ -25,6 +25,6 @@ class {{name}}FrontDetailTest extends AbstractFeatureTest
     protected function apiExec(array $params = [], array $data = [], array $headers = []): TestResponse
     {
         // TODO: Implement apiExec() method.
-        return $this->get($this->getUrl('api.{{name_lower}}.front.detail', $params), $headers);
+        return $this->get($this->getUrl('api.front.{{name_lower}}.detail', $params), $headers);
     }
 }
